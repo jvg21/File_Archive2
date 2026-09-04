@@ -6,6 +6,7 @@ namespace API.Layers.Author
     [Route("[controller]")]
     public class AuthorController : ControllerBase
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return Ok();
