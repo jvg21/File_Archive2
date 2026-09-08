@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Layers\Author\AuthorService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Mapster" Version="10.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
@@ -24,15 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
-    <Folder Include="Types\DTOs\" />
-    <Folder Include="Types\Interfaces\" />
-    <Folder Include="Middleware\" />
     <Folder Include="Data\Exceptions\" />
     <Folder Include="Data\Enums\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Layers\Author\AuthorService.cs" />
   </ItemGroup>
 
 </Project>

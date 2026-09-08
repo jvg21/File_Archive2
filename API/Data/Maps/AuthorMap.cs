@@ -20,7 +20,6 @@ namespace API.Data.Maps
             builder.Property(a => a.IsActive).HasDefaultValue(true);
 
 
-
         }
     }
 }
