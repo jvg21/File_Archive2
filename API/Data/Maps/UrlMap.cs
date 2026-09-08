@@ -14,6 +14,9 @@ namespace API.Data.Maps
 
             builder.HasOne(u => u.Author).WithMany(u => u.Urls)
                 .HasForeignKey(u => u.Author_Id).OnDelete(DeleteBehavior.Cascade).IsRequired(false);
+
+            builder.HasOne(u => u.Book).WithMany(u => u.Urls)
+                .HasForeignKey(u => u.Book_Id).OnDelete(DeleteBehavior.Cascade).IsRequired(false);
         }
      
     }

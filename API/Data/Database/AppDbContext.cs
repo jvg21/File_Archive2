@@ -11,7 +11,7 @@ namespace API.Data.Database
 
         public DbSet<Author> Author { get; set; }
         public DbSet<Url> Url { get; set; }
-        //public DbSet<Book> Book { get; set; }
+        public DbSet<Book> Book { get; set; }
         //public DbSet<BookAuthor> BookAuthor { get; set; }
 
         //public DbSet<FileArchive> FileArchive { get; set; }
@@ -19,7 +19,7 @@ namespace API.Data.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AuthorMap());
-            //modelBuilder.ApplyConfiguration(new BookMap());
+            modelBuilder.ApplyConfiguration(new BookMap());
             modelBuilder.ApplyConfiguration(new UrlMap());
             //modelBuilder.ApplyConfiguration(new FileArchiveMap());
         }

@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./protectedRoute"
 import { PublicRoute } from "./publicRoute"
 import { NotFoundPage } from "../../Pages/notFound.page"
 import { AuthorPage } from "../../Pages/Author/author.page"
+import { BookPage } from "../../Pages/Book/book.page"
 
 export const AppRouter = () => {
 
@@ -17,12 +18,15 @@ export const AppRouter = () => {
             <Route element={<ProtectedRoute />}>
                 <Route element={<Layout />} >
                     <Route path="/" element={<p>adsdsa</p>} />
-                    {/* <Route path="/book" element={<BookPage/>} /> */}
-                    <Route path="/author" element={<AuthorPage/>} />
+
+                    <Route path="/author" element={<AuthorPage />} />
+                    <Route path="/book" element={<BookPage />} />
+                    {/* <Route path="/author/:id" element={<AuthorDetailPage />} /> */}
+                     
                 </Route>
             </Route>
 
-            <Route path="*"  element={<NotFoundPage/>}/>
+            <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
 

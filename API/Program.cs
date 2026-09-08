@@ -1,8 +1,11 @@
 using API.Data.Database;
 using API.Layers.AuthorLayers;
+using API.Layers.BookAuthorLayers;
+using API.Layers.BookLayers;
 using API.Layers.UrlLayers;
 using API.Middleware;
 using API.Types.Interfaces.IAuthor;
+using API.Types.Interfaces.IBook;
 using API.Types.Interfaces.IUrl;
 using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -44,10 +47,10 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 builder.Services.AddScoped<IUrlService, UrlService>();
-//builder.Services.AddScoped<IBookRepository, BookRepository>();
-//builder.Services.AddScoped<IBookService, BookService>();
-//builder.Services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
-//builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
+builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
 
 
 
