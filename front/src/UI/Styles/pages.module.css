@@ -1,0 +1,30 @@
+.main {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+}
+
+.button {
+    width: 100px;
+    height: 40px;
+
+    background-color: var(--accent);
+    color: var(--text);
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    margin-bottom: 20px;
+
+
+}
+
+.button:hover {
+    background-color: var(--accent-bg);
+}

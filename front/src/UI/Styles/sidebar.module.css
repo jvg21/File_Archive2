@@ -1,0 +1,243 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--colapsed-sidebar-width);
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: var(--accent);
+    transition: width 0.2s ease-in-out;
+
+    overflow: visible;
+}
+
+.sidebar.active {
+    width: var(--sidebar-width);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.sidebarHeader {
+    width: 100%;
+    height: 150px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--accent-bg);
+
+    flex-shrink: 0;
+}
+
+/* =========================
+   ITEMS
+========================= */
+
+.sidebarItem {
+    width: 100%;
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* =========================
+   BUTTON / LINK
+========================= */
+
+.sidebarButton {
+    width: 100%;
+    min-height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+
+    padding: 0 24px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    white-space: nowrap;
+
+    background-color: transparent;
+    color: var(--text);
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        color 1.7s ;
+}
+
+.sidebarButton svg {
+    min-width: 22px;
+    width: 22px;
+    height: 22px;
+
+    display: block;
+}
+
+.sidebarButton:hover {
+    background-color: var(--accent-bg);
+}
+
+/* Texto escondido quando recolhida */
+.sidebarButton.colapsed span {
+    display: none;
+}
+
+/* =========================
+   TOOLKIT / TOOLTIP
+========================= */
+
+.sidebarToolkit {
+    display: none;
+}
+
+/*
+   Quando a sidebar está recolhida,
+   mostra o nome do item ao passar o mouse.
+*/
+.sidebarToolkit.colapsed {
+    position: absolute;
+
+    top: 50%;
+    left: calc(100% + 10px);
+
+    transform: translateY(-50%);
+
+    display: block;
+
+    padding: 9px 14px;
+
+    background-color: var(--accent-bg);
+    color: var(--text-h);
+
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease,
+        visibility 0.15s ease;
+
+    z-index: 20;
+}
+
+/* Pequena seta do tooltip */
+.sidebarToolkit.colapsed::before {
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+    left: -5px;
+
+    width: 10px;
+    height: 10px;
+
+    transform: translateY(-50%) rotate(45deg);
+
+    background-color: var(--accent-bg);
+}
+
+/* Mostra tooltip ao passar no item */
+.sidebarItem:hover .sidebarToolkit.colapsed {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(-50%) translateX(3px);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.sidebarFooter {
+    width: 100%;
+
+    margin-top: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px;
+    background-color: var(--accent-bg);
+
+    box-sizing: border-box;
+}
+
+/* Botão de abrir/fechar */
+.sidebarFooter button {
+    width: 100%;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: transparent;
+    color: var(--text);
+
+    font-size: 20px;
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+.sidebarFooter button:hover {
+    background-color: var(--accent);
+}
+
+.sidebarFooter button:active {
+    transform: scale(0.92);
+}
+
+.sidebarFooter button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* =========================
+   SIDEBAR ABERTA
+========================= */
+
+.sidebar.active .sidebarButton {
+    justify-content: flex-start;
+}
+
+.sidebar.active .sidebarFooter {
+    justify-content: flex-end;
+}

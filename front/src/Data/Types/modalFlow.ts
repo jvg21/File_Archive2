@@ -1,0 +1,1 @@
+export type ModalFlow = 'create' | 'edit' | 'delete';

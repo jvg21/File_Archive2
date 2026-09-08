@@ -1,0 +1,264 @@
+.tableWrapper {
+    width: 100%;
+    min-width: 500px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+}
+
+/* Tabela */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 14px;
+    color: var(--text-h);
+}
+
+/* Cabeçalho */
+.table thead {
+    background-color: var(--accent);
+}
+
+.table th {
+    padding: 6px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+    text-wrap: pretty;
+}
+
+/* Corpo */
+.table td {
+    padding: 6px 18px;
+    color: var(--text-h);
+    /* border: 0.2px solid var(--border); */
+    border-bottom: 2px solid var(--border);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+    background-color: var(--accent-bg);
+    transition: background-color 0.55s ease;
+}
+
+/*Modificadores*/
+
+.sm {
+    min-width: 20px;
+}
+
+.md {
+    min-width: 50px;
+}
+
+.lg {
+    min-width: 90px;
+}
+
+.urls {
+    list-style-type: none;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    a {
+        /* color: var(--text-h); */
+        color: var(--accent);
+        text-decoration: none;
+    }
+}
+
+
+/* Texto vazio */
+.empty {
+    width: 100%;
+    margin: 0;
+    padding: 50px 24px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text);
+    font-size: 14px;
+
+    border: 1px dashed var(--border);
+    background-color: var(--background);
+}
+
+
+/* Scrollbar */
+.tableWrapper::-webkit-scrollbar {
+    height: 7px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+}
+
+.tableWrapper::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text);
+}
+
+/*Pagination*/
+
+.pagination {
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    padding: 14px 18px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background-color: transparent;
+    color: var(--text-h);
+
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: var(--accent-bg);
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.paginationInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-size: 14px;
+    color: var(--text);
+}
+
+.paginationInput {
+    width: 48px;
+    padding: 6px 8px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background-color: transparent;
+    color: var(--text-h);
+
+    font-size: 14px;
+    text-align: center;
+
+    /* remove as setinhas do input number */
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.paginationSelect {
+    display: flex;
+    padding: 6px 8px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background-color: transparent;
+    color: var(--text-h);
+
+    font-size: 14px;
+    text-align: center;
+
+    /* remove as setinhas do input number */
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+
+.paginationInput::-webkit-outer-spin-button,
+.paginationInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.paginationInput:focus {
+    outline: none;
+    border-color: var(--accent-border);
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.actionsCell {
+    vertical-align: middle;
+}
+
+.actionsContainer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background-color: transparent;
+    color: var(--text-h);
+
+    font-size: 13px;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.actionButton svg {
+    width: 16px;
+    height: 16px;
+}
+
+.actionButton:hover {
+    background-color: var(--accent-bg);
+    color: var(--text-h);
+    border-color: var(--accent-border);
+}
+
+.actionButton:active {
+    transform: scale(0.94);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .table {
+        min-width: 650px;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 14px;
+    }
+}

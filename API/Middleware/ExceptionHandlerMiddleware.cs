@@ -41,8 +41,8 @@ namespace API.Middleware
 
             var response = new
             {
-                Message = ex.Message,
-                Details = _environment.IsDevelopment() ? ex.StackTrace : ""
+                message = ex.Message,
+                details = _environment.IsDevelopment() ? ex.StackTrace : ""
 
             };
 

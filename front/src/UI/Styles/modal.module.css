@@ -1,0 +1,81 @@
+.modalBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    z-index: 1000;
+    /* background-color: red; */
+}
+
+.modal {
+    width: min(500px, 90vw);
+    height: 600px;
+
+    background-color: var(--code-bg);
+    color: var(--accent);
+    border: 5px solid var(--accent);
+    border-radius: 25px;
+    padding: 15px;
+
+    overflow-y: auto;
+
+    @media(max-height:600px) {
+        position: absolute;
+        top: 10px;
+    }
+}
+
+.header {
+    height: 5%;
+    display: flex;
+    justify-content: end;
+    padding: 2%;
+    background-color: transparent;
+    overflow: hidden;
+
+    button {
+        background-color: transparent;
+        border: none;
+        font-weight: 800;
+        font-size: 16px;
+        cursor: pointer;
+    }
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.field {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+}
+
+.field label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--accent, #6b7280);
+}
+
+.field input,
+.field select {
+    border: 1.5px solid var(--border, #e2e5ea);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #1f2430;
+    background: #fff;
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}

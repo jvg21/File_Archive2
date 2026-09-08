@@ -16,23 +16,23 @@ namespace API.Layers.AuthorLayers
 
         public async Task<List<Author>> GetAll()
         {
-            return await _context.Author.AsNoTracking().ToListAsync();
+            return await _context.Author.AsNoTracking().Include(table => table.Urls).ToListAsync();
         }
 
         public async Task<Author?> GetById(int id)
         {
-            return await _context.Author.FirstOrDefaultAsync(table => table.Id == id);
+            return await _context.Author.Include(table => table.Urls).FirstOrDefaultAsync(table => table.Id == id);
         }
 
 
         public async Task<List<Author>> Get(Expression<Func<Author, bool>> predicate)
         {
-            return await _context.Author.Where(predicate).ToListAsync();
+            return await _context.Author.Where(predicate).Include(table => table.Urls).ToListAsync();
         }
 
         public async Task<bool> Exists(Expression<Func<Author, bool>> predicate)
         {
-            return await _context.Author.AsNoTracking().AnyAsync(predicate);
+            return await _context.Author.AsNoTracking().Include(table => table.Urls).AnyAsync(predicate);
         }
 
         public async Task<Author> Insert(Author author)
