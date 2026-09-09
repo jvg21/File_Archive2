@@ -19,7 +19,15 @@ namespace API.Data.Maps
 
             builder.Property(a => a.IsActive).HasDefaultValue(true);
 
-
+            builder.HasMany(a => a.Books).WithMany(b => b.Authors).UsingEntity<BookAuthor>(
+                    j => j.HasOne(ba => ba.Book).WithMany().HasForeignKey(ba=>ba.Book_Id),
+                    j => j.HasOne(ba => ba.Author).WithMany().HasForeignKey(ba=>ba.Author_Id),
+                    j =>
+                    {
+                        j.HasKey(ba => new { ba.Author_Id, ba.Book_Id });
+                        j.ToTable("book_author");
+                    }
+                );
         }
     }
 }

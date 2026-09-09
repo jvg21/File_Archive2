@@ -56,7 +56,7 @@ export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removedUrls?: 
                     }}
                 />
 
-                <button type="button" onClick={() => { handdleAddUrl(); setUrlField({ content: "", name: "" }) }}>Add Url</button>
+                <button className={style.fieldButton} type="button" onClick={() => { handdleAddUrl(); setUrlField({ content: "", name: "" }) }}>Add Url</button>
             </div>
             }
             {
@@ -64,7 +64,7 @@ export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removedUrls?: 
                 entity.urls.map((url, index) =>
                     <div key={index} className={style.itemRow}>
                         <span>{url.name} - {url.content}</span>
-                        {flow !== 'delete' && <button type="button" onClick={() => handleRemoveUrl(url)}> X </button>}
+                        {flow !== 'delete' && <button  type="button" onClick={() => handleRemoveUrl(url)}> X </button>}
                     </div>
                 )
             }

@@ -6,7 +6,6 @@ namespace API.Types.Interfaces.IAuthor
     {
         Task<List<AuthorGetDTO>> GetAll();
         Task<AuthorGetDTO> GetById(int id);
-        //Task<AuthorGetDTO[]> Get();
         Task<AuthorGetDTO> Insert(AuthorInsertDTO dto);
         Task<AuthorGetDTO> Update(int id, AuthorUpdateDTO dto);
         Task<AuthorGetDTO> ChangeActiveStatus(int id, bool status);

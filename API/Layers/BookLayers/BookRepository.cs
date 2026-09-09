@@ -2,7 +2,6 @@
 using API.Types.Interfaces.IBook;
 using API.Types.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq.Expressions;
 
 namespace API.Layers.BookLayers
@@ -17,7 +16,9 @@ namespace API.Layers.BookLayers
 
         public async Task<List<Book>> GetAll()
         {
-            return await _context.Book.AsNoTracking().Include(table => table.Urls).ToListAsync();
+            return await _context.Book.AsNoTracking()
+                .Include(table => table.Urls).Include(table => table.Authors)
+                .ToListAsync();
         }
 
         public async Task<Book?> GetById(int id)
@@ -28,7 +29,7 @@ namespace API.Layers.BookLayers
 
         public async Task<List<Book>> Get(Expression<Func<Book, bool>> predicate)
         {
-            return await _context.Book.Where(predicate).Include(table => table.Urls).ToListAsync();
+            return await _context.Book.Where(predicate).Include(table => table.Urls).Include(table => table.Authors).ToListAsync();
         }
 
         public async Task<bool> Exists(Expression<Func<Book, bool>> predicate)

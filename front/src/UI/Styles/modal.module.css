@@ -134,7 +134,7 @@
    any <button type="button"> inside a .field)
 ========================= */
 
-.field button {
+.fieldButton {
     align-self: flex-start;
 
     padding: 7px 14px;
@@ -153,12 +153,12 @@
     transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
-.field button:hover {
+.fieldButton:hover {
     background-color: var(--accent-border);
     color: var(--code-bg);
 }
 
-.field button:active {
+.fieldButton:active {
     transform: scale(0.96);
 }
 

@@ -126,7 +126,7 @@ export const BookForm = (props: BookFormProps) => {
                         />
                     </>
                 }
-                <button type="button" onClick={() => onSubmit()}>Submit</button>
+                <button type="button" className={style.fieldButton} onClick={() => onSubmit()}>Submit</button>
 
             </form >
         </>

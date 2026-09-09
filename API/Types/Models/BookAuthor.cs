@@ -2,11 +2,10 @@
 {
     public class BookAuthor
     {
-        public int IdBook { get; set; }
+        public int Book_Id { get; set; }
 
         public Book? Book { get; set; }
-        public int IdAuthor { get; set; }
-
+        public int Author_Id { get; set; }
         public Author? Author { get; set; }
     }
 }

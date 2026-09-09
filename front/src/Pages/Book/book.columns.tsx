@@ -6,11 +6,28 @@ import type { TableColumns } from '../../UI/Components/Table/table.component';
 import type { BookEntity } from '../../Data/Types/Entity/book.entity';
 import { getReadingStatusEnum, type ReadingStatusId } from '../../Data/Enums/readingStatus.enum';
 import { getWritingStatusEnum, type WritingStatusId } from '../../Data/Enums/writingStatus.enum';
+import { Link } from 'react-router-dom';
 
 
 export const BookColumns: TableColumns<BookEntity>[] = [
     { key: 'id', header: 'Id' },
     { key: "title", header: "Title" },
+    {
+        key: "authors", header: 'Authors',
+        render: (value) => {
+            const authors = value as BookEntity["authors"];
+
+            return authors && authors.length > 0 &&
+                <ul className={style.urls} >
+                    {
+                        authors.map(author =>
+                            <li key={author.id}><Link target="_blank" to={`/author/${author.id}`}>{author.name}</Link></li>
+                        )
+                    }
+                </ul>
+
+        }
+    },
     { key: "summary", header: "summary" },
     {
         key: "currentChapter", header: "Chapters",

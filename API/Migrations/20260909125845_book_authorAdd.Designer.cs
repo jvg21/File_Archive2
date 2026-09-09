@@ -2,6 +2,7 @@
 using API.Data.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260909125845_book_authorAdd")]
+    partial class book_authorAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,9 +106,17 @@ namespace API.Migrations
                     b.Property<int>("Book_Id")
                         .HasColumnType("integer");
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Author_Id", "Book_Id");
 
-                    b.HasIndex("Book_Id");
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("book_author", (string)null);
                 });
@@ -144,13 +155,13 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Types.Models.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("Author_Id")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("API.Types.Models.Book", "Book")
                         .WithMany()
-                        .HasForeignKey("Book_Id")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -20,6 +20,7 @@ namespace API.Types.Models
         public ReadingStatus ReadingStatus { get; set; }
         public WritingStatus WritingStatus { get; set; }
         public ICollection<Url> Urls { get; set; } = new List<Url>();
+        public ICollection<Author> Authors { get; set; } = new List<Author>();
         public bool IsActive { get; set; } = true;
 
     }

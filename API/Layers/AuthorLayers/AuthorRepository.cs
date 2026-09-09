@@ -16,7 +16,7 @@ namespace API.Layers.AuthorLayers
 
         public async Task<List<Author>> GetAll()
         {
-            return await _context.Author.AsNoTracking().Include(table => table.Urls).ToListAsync();
+            return await _context.Author.AsNoTracking().Include(table => table.Urls).Include(table => table.Books).ToListAsync();
         }
 
         public async Task<Author?> GetById(int id)
@@ -27,7 +27,7 @@ namespace API.Layers.AuthorLayers
 
         public async Task<List<Author>> Get(Expression<Func<Author, bool>> predicate)
         {
-            return await _context.Author.Where(predicate).Include(table => table.Urls).ToListAsync();
+            return await _context.Author.Where(predicate).Include(table => table.Urls).Include(table => table.Books).ToListAsync();
         }
 
         public async Task<bool> Exists(Expression<Func<Author, bool>> predicate)

@@ -1,3 +1,4 @@
+import type { AuthorEntity } from "./author.entity";
 import type { UrlEntity } from "./url.entity";
 
 
@@ -12,6 +13,9 @@ export interface BookEntity {
     words?: number;
     readingStatus?: number;
     writingStatus?: number;
+
     urls?: Partial<UrlEntity>[];
     removedUrls?: number[],
+    
+    authors?: Partial<AuthorEntity>[];
 }
