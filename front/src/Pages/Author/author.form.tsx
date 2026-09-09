@@ -15,6 +15,7 @@ interface AuthorFormProps {
 export const AuthorForm = (props: AuthorFormProps) => {
 
     const { flow, onSubmit, entity, setEntity } = props;
+    const canEdit = flow !== 'delete';
 
     return (
         <>
@@ -33,17 +34,19 @@ export const AuthorForm = (props: AuthorFormProps) => {
                 <div className={style.field}>
                     <label>Name: </label>
                     <input type='text' value={entity?.name ?? ""}
+                        disabled={!canEdit}
                         onChange={(e) => { setEntity((prev) => ({ ...prev, name: e.target.value })) }}
                     />
                 </div>
 
-                
+                {flow !== 'delete' &&
+                    <UrlForms
+                        entity={entity}
+                        setEntity={setEntity}
+                        flow={flow}
+                    />
 
-                <UrlForms
-                    entity={entity}
-                    setEntity={setEntity}
-                    flow={flow}
-                />
+                }
 
 
                 <button type="button" onClick={() => onSubmit()}>Submit</button>

@@ -55,6 +55,7 @@ namespace API.Layers.BookLayers
             if (dto.ReadingStatus != null && Enum.IsDefined(typeof(ReadingStatus), dto.ReadingStatus.Value)) book.ReadingStatus = dto.ReadingStatus.Value;
             if (dto.WritingStatus != null && Enum.IsDefined(typeof(WritingStatus), dto.WritingStatus.Value)) book.WritingStatus = dto.WritingStatus.Value;
             if (dto.CurrentChapter != null) book.CurrentChapter = dto.CurrentChapter.Value;
+            if (dto.TotalChapters != null) book.TotalChapters = dto.TotalChapters.Value;
 
             book.IsActive = dto.IsActive ?? book.IsActive;
 

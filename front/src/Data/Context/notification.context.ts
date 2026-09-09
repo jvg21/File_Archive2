@@ -9,6 +9,7 @@ import style from '../../UI/Styles/notification.module.css'
 import { Config } from "../../Config/config";
 
 export type NotificationType = "success" | "failure" | "warning";
+export type ShowNotificationType = (message: string, type: NotificationType) => void;
 
 type Notification = {
     message: string;

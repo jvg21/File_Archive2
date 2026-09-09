@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { UrlEntity } from "../../../Data/Types/Entity/url.entity";
-import style from '../../Styles/pages.module.css'
+import style from '../../Styles/modal.module.css'
 import type { ModalFlow } from "../../../Data/Types/modalFlow";
 
 
@@ -62,7 +62,7 @@ export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removedUrls?: 
             {
                 entity.urls && entity.urls.length > 0 &&
                 entity.urls.map((url, index) =>
-                    <div key={index}>
+                    <div key={index} className={style.itemRow}>
                         <span>{url.name} - {url.content}</span>
                         {flow !== 'delete' && <button type="button" onClick={() => handleRemoveUrl(url)}> X </button>}
                     </div>

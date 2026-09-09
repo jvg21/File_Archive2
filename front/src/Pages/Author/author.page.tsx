@@ -5,13 +5,12 @@ import { AiFillEdit } from "react-icons/ai";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ModalFrame } from "../../UI/Components/Global/modal.component";
 import type { ModalFlow } from "../../Data/Types/modalFlow";
-import { useNotification } from "../../Data/Context/notification.context";
 import { AuthorColumns } from "./author.columns";
 import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
-import { generateEmptyAuthor } from "./author.functions";
-import type { RequestReturn } from "../../Data/Types/requestReturn";
-import { AuthorDataStore } from "../../Data/Datastore/author.datastore";
+import { createAuthor, deleteAuthor, generateEmptyAuthor, getAuthorData, updateAuthor } from "./author.functions";
 import { AuthorForm } from "./author.form";
+import { useNotification } from "../../Data/Context/notification.context";
+import { Config } from "../../Config/config";
 
 
 type Entity = AuthorEntity;
@@ -19,11 +18,8 @@ const TableColumns = AuthorColumns;
 const generateEmpty = generateEmptyAuthor;
 
 export const AuthorPage = () => {
-    /**Hooks**/
-    const { showNotification } = useNotification()
-
-    /*****DataStore****/
-    const DataStore = new AuthorDataStore();
+    /**Hooks */
+    const { showNotification } = useNotification();
 
     /* table data*/
     const [tableData, setTableData] = useState<Entity[] | null>(null);
@@ -33,76 +29,18 @@ export const AuthorPage = () => {
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
 
-    /**GET FUNCIOTIONS */
-    async function getAuthorData(): Promise<void> {
-
-        const request: RequestReturn = await DataStore.getAll();
-
-        if (request.status !== 200) {
-            showNotification(request.message, 'failure')
-            return
-        }
-        setTableData(request.data as Entity[])
-    };
 
     useEffect(() => {
-        getAuthorData();
+        getAuthorData(setTableData, showNotification);
 
     }, [])
 
-    /******SUBMIT FUNCIOTIONS ***********/
-    async function createAuthor(): Promise<void> {
-        if (!selectedEntity || !selectedEntity.name) return;
-
-        const request = await DataStore.create(selectedEntity);
-
-        if (request.status !== 201) {
-            showNotification(request.message, 'failure')
-            return
-        }
-        showNotification(request.message, 'success')
-    }
-
-
-    async function updateAuthor(): Promise<void> {
-
-        if (!selectedEntity || !selectedEntity.name || !selectedEntity.id) return;
-
-        const payload = {
-            ...selectedEntity,
-            urls: selectedEntity.urls?.filter((url) => !url.id)
-        };
-
-        const request = await DataStore.update(payload);
-
-        if (request.status !== 200) {
-            showNotification(request.message, 'failure')
-            return
-        }
-        showNotification(request.message, 'success')
-    }
-
-    async function deleteAuthor(): Promise<void> {
-
-        if (!selectedEntity || !selectedEntity.id) return;
-
-        const request = await DataStore.delete(selectedEntity.id);
-
-        if (request.status !== 200) {
-            showNotification(request.message, 'failure')
-            return
-        }
-        showNotification(request.message, 'success')
-    }
-
-
-
     async function handleSubmit() {
-        if (modalPage === 'create') await createAuthor()
-        if (modalPage === 'edit') await updateAuthor()
-        if (modalPage === 'delete') await deleteAuthor()
+        if (modalPage === 'create') await createAuthor(selectedEntity, showNotification)
+        if (modalPage === 'edit') await updateAuthor(selectedEntity, showNotification)
+        if (modalPage === 'delete') await deleteAuthor(selectedEntity.id, showNotification)
 
-        getAuthorData();
+        getAuthorData(setTableData, showNotification);
         setFormModal(false);
         SetSelectedEntity(generateEmpty());
     }
@@ -119,7 +57,7 @@ export const AuthorPage = () => {
             tableData={tableData ?? []}
             onRowClick={SetSelectedEntity}
             keyExtractor={(row) => row.id}
-            initialPageSize={15}
+            initialPageSize={Config.defaultTableDataSize}
         />, [tableData])
 
     return (

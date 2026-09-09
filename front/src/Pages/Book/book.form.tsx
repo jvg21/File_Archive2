@@ -18,6 +18,8 @@ export const BookForm = (props: BookFormProps) => {
 
     const { flow, onSubmit, entity, setEntity } = props;
 
+    const canEdit = flow !== 'delete';
+
     return (
         <>
             <h3>
@@ -35,6 +37,7 @@ export const BookForm = (props: BookFormProps) => {
                 <div className={style.field}>
                     <label>Name: </label>
                     <input type='text' value={entity?.title ?? ""}
+                        disabled={!canEdit}
                         onChange={(e) => { setEntity((prev) => ({ ...prev, title: e.target.value })) }}
                     />
                 </div>
@@ -42,83 +45,87 @@ export const BookForm = (props: BookFormProps) => {
                 <div className={style.field}>
                     <label>Summary: </label>
                     <input type='text' value={entity?.summary ?? ""}
+                        disabled={!canEdit}
                         onChange={(e) => { setEntity((prev) => ({ ...prev, summary: e.target.value })) }}
                     />
                 </div>
 
-                <div className={style.field}>
-                    <label>Current Chapter: </label>
-                    <input type='number' value={entity?.currentChapter ?? ""}
-                        onChange={(e) => { setEntity((prev) => ({ ...prev, currentChapter: Number(e.target.value) })) }}
-                    />
-                </div>
+                {flow !== 'delete' &&
+                    <>
+                        <div className={style.field}>
+                            <label>Current Chapter: </label>
+                            <input type='number' value={entity?.currentChapter ?? ""}
+                                onChange={(e) => { setEntity((prev) => ({ ...prev, currentChapter: Number(e.target.value) })) }}
+                            />
+                        </div>
 
-                <div className={style.field}>
-                    <label>Total Chapters: </label>
-                    <input type='number' value={entity?.totalChapters ?? 0}
-                        onChange={(e) => { setEntity((prev) => ({ ...prev, totalChapters: Number(e.target.value) })) }}
-                    />
-                </div>
+                        <div className={style.field}>
+                            <label>Total Chapters: </label>
+                            <input type='number' value={entity?.totalChapters ?? 0}
+                                onChange={(e) => { setEntity((prev) => ({ ...prev, totalChapters: Number(e.target.value) })) }}
+                            />
+                        </div>
 
-                <div className={style.field}>
-                    <label>Writing Status: </label>
+                        <div className={style.field}>
+                            <label>Writing Status: </label>
 
-                    <select value={entity?.writingStatus ?? 0}
-                        onChange={(e) => {
-                            setEntity((prev) => ({ ...prev, writingStatus: Number(e.target.value) }))
-                        }}
-                    >
-                        <option value="" disabled>Writing Status.....</option>
-                        {
-                            getAllWritingStatus().map((status) =>
-                                <option key={status.id} value={status.id}>
-                                    {status.name}
-                                </option>
-                            )
-                        }
-                    </select>
-                </div>
+                            <select value={entity?.writingStatus ?? 0}
+                                onChange={(e) => {
+                                    setEntity((prev) => ({ ...prev, writingStatus: Number(e.target.value) }))
+                                }}
+                            >
+                                <option value="" disabled>Writing Status.....</option>
+                                {
+                                    getAllWritingStatus().map((status) =>
+                                        <option key={status.id} value={status.id}>
+                                            {status.name}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
 
-                <div className={style.field}>
-                    <label>Reading Status: </label>
-                    <select value={entity?.readingStatus ?? 0}
-                        onChange={(e) => {
-                            setEntity((prev) => ({ ...prev, readingStatus: Number(e.target.value) }))
-                        }}
-                    >
-                        <option value="" disabled>Writing Status.....</option>
-                        {
-                            getAllReadingStatus().map((status) =>
-                                <option key={status.id} value={status.id}>
-                                    {status.name}
-                                </option>
-                            )
-                        }
-                    </select>
-                </div>
+                        <div className={style.field}>
+                            <label>Reading Status: </label>
+                            <select value={entity?.readingStatus ?? 0}
+                                onChange={(e) => {
+                                    setEntity((prev) => ({ ...prev, readingStatus: Number(e.target.value) }))
+                                }}
+                            >
+                                <option value="" disabled>Writing Status.....</option>
+                                {
+                                    getAllReadingStatus().map((status) =>
+                                        <option key={status.id} value={status.id}>
+                                            {status.name}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
 
-                <div className={style.field}>
-                    <label>Words: </label>
-                    <input type='number' value={entity?.words ?? 0}
-                        onChange={(e) => {
-                            setEntity((prev) => ({ ...prev, words: Number(e.target.value) }))
-                        }}
-                    />
-                </div>
+                        <div className={style.field}>
+                            <label>Words: </label>
+                            <input type='number' value={entity?.words ?? 0}
+                                onChange={(e) => {
+                                    setEntity((prev) => ({ ...prev, words: Number(e.target.value) }))
+                                }}
+                            />
+                        </div>
 
-                <div className={style.field}>
-                    <label>Rating: </label>
-                    <input type='number' value={entity?.rating ?? 0}
-                        onChange={(e) => { setEntity((prev) => ({ ...prev, rating: Number(e.target.value) })) }}
-                    />
-                </div>
+                        <div className={style.field}>
+                            <label>Rating: </label>
+                            <input type='number' value={entity?.rating ?? 0}
+                                onChange={(e) => { setEntity((prev) => ({ ...prev, rating: Number(e.target.value) })) }}
+                            />
+                        </div>
 
-                <UrlForms
-                    entity={entity}
-                    setEntity={setEntity}
-                    flow={flow}
-                />
-
+                        <UrlForms
+                            entity={entity}
+                            setEntity={setEntity}
+                            flow={flow}
+                        />
+                    </>
+                }
                 <button type="button" onClick={() => onSubmit()}>Submit</button>
 
             </form >
