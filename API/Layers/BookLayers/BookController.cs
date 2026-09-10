@@ -36,6 +36,13 @@ namespace API.Layers.BookLayers
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
 
+        [HttpPost("array")]
+        public async Task<IActionResult> InsertArray([FromBody] BookInsertDTO[] books)
+        {
+            var response = await _bookService.InsertArray(books);
+            return Ok();
+        }
+
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO book)
         {

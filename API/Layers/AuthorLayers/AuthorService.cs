@@ -6,6 +6,8 @@ using API.Types.Interfaces.IAuthor;
 using API.Types.Interfaces.IUrl;
 using API.Types.Models;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace API.Layers.AuthorLayers
 {
@@ -27,10 +29,19 @@ namespace API.Layers.AuthorLayers
         public async Task<AuthorGetDTO> GetById(int id)
         {
             var request = await this._authorRepository.GetById(id);
-            if (request == null) throw new EntityNotFoundException();
+            if (request == null) throw new EntityNotFoundException($"Author with Id {id} does not exist");
 
             return request.Adapt<AuthorGetDTO>();
+        }
 
+        public async Task<List<Author>> Get(Expression<Func<Author, bool>> predicate)
+        {
+            return await this._authorRepository.Get(predicate);
+        }
+
+        public async Task<bool> Exists(Expression<Func<Author, bool>> predicate)
+        {
+            return await this._authorRepository.Exists(predicate);
         }
 
         public async Task<AuthorGetDTO> Insert(AuthorInsertDTO dto)
@@ -44,28 +55,29 @@ namespace API.Layers.AuthorLayers
             var author = await _authorRepository.GetById(id);
             if (author == null) throw new EntityNotFoundException();
 
-            if (dto.Name != null) author.Name = dto.Name;
-            author.IsActive = dto.IsActive ?? author.IsActive;
+            author.ApplyUpdate(dto);
 
-            //Console.WriteLine(dto);
-            if(dto.RemovedUrls != null)
+
+            if (dto.RemoveUrls != null)
             {
-                foreach (var urlId in dto.RemovedUrls)
+                foreach (var urlId in dto.RemoveUrls)
                 {
-                    var url = await _urlService.GetById(urlId);
-                    if (url.Author_Id == null || url.Author_Id != author.Id) throw new InvalidFormException("Url to remove is invalid");
+                    //var url = await _urlService.GetById(urlId);
+                    var url = author.Urls.FirstOrDefault(u => u.Id == urlId);
 
-                    await _urlService.Delete(urlId);
+                    if (url == null) throw new InvalidFormException("Url to remove is invalid");
+
+                    await _urlService.ChangeState(url, EntityState.Deleted);
                 }
             }
 
-            if(dto.Urls != null)
+            if (dto.Urls != null)
             {
-                foreach(var url in dto.Urls)
+                foreach (var url in dto.Urls)
                 {
-                    var newurl = url.Adapt<UrlInsertDTO>();
-                    newurl.Author_Id = author.Id;
-                    await _urlService.Insert(newurl);
+                    var newUrl = url.Adapt<Url>();
+                    newUrl.Author_Id = author.Id;
+                    author.Urls.Add(newUrl);
                 }
             }
 

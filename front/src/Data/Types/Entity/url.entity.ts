@@ -3,7 +3,7 @@ import type { AuthorEntity } from "./author.entity";
 
 export interface UrlEntity {
     id: number,
-    name: string,
+    name?: string,
     content: string,
     author?: AuthorEntity
 

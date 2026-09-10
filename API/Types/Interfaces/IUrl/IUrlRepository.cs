@@ -1,4 +1,5 @@
 ﻿using API.Types.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace API.Types.Interfaces.IUrl
@@ -12,5 +13,6 @@ namespace API.Types.Interfaces.IUrl
         Task<Url> Insert(Url url);
         Task<Url> Update(Url url);
         Task<Url> Delete(Url url);
+        void ChangeState(Url url, EntityState state);
     }
 }

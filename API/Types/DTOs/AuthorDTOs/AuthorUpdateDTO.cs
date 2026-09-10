@@ -7,7 +7,7 @@ namespace API.Types.DTOs.AuthorDTOs
     {
         public string? Name { get; set; } = string.Empty;
         public List<UrlInsertDTO>? Urls { get; set; } = new List<UrlInsertDTO>();
-        public List<int>? RemovedUrls { get; set; } = new List<int>();
+        public List<int>? RemoveUrls { get; set; } = new List<int>();
         public bool? IsActive { get; set; }
     }
 }

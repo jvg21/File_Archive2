@@ -15,7 +15,7 @@ export interface BookEntity {
     writingStatus?: number;
 
     urls?: Partial<UrlEntity>[];
-    removedUrls?: number[],
+    removeUrls?: number[],
     
     authors?: Partial<AuthorEntity>[];
 }

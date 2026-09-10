@@ -1,22 +1,27 @@
 ﻿
+using API.Layers.UrlLayers;
 using API.Types.DTOs.BookDTOs;
 using API.Types.DTOs.UrlDTOs;
 using API.Types.Enums;
 using API.Types.Exceptions;
+using API.Types.Interfaces.IAuthor;
 using API.Types.Interfaces.IBook;
 using API.Types.Interfaces.IUrl;
 using API.Types.Models;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Layers.BookLayers
 {
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IAuthorService _authorService;
         private readonly IUrlService _urlService;
-        public BookService(IBookRepository bookRepository, IUrlService urlService)
+        public BookService(IBookRepository bookRepository, IAuthorService authorService, IUrlService urlService)
         {
             this._bookRepository = bookRepository;
+            this._authorService = authorService;
             this._urlService = urlService;
         }
 
@@ -35,39 +40,44 @@ namespace API.Layers.BookLayers
 
         public async Task<BookGetDTO> Insert(BookInsertDTO dto)
         {
-            if (dto.Rating != null && (dto.Rating > 10 || dto.Rating < 0)) throw new InvalidFormException("Rating Value Invalid, must be between 0 and 10");
+            var newBook = dto.Adapt<Book>();
+            newBook.ValidateInsert();
 
-            var request = await _bookRepository.Insert(dto.Adapt<Book>());
+            if (dto.Authors != null)
+            {
+                var authorIds = dto.Authors.Select(a => a.Id).Distinct().ToList();
+                var authors = await this._authorService.Get((a => authorIds.Contains(a.Id)));
+                newBook.Authors = authors;
+            }
+
+            var request = await _bookRepository.Insert(newBook);
+
             return request.Adapt<BookGetDTO>();
-
         }
+
+        public async Task<List<BookGetDTO>> InsertArray(BookInsertDTO[] books)
+        {
+            return books.Adapt<List<BookGetDTO>>();
+        }
+
         public async Task<BookGetDTO> Update(int id, BookUpdateDTO dto)
         {
+
             var book = await _bookRepository.GetById(id);
             if (book == null) throw new EntityNotFoundException();
 
-            if (dto.Title != null) book.Title = dto.Title;
-            if (dto.Notes != null) book.Notes = dto.Notes;
-            if (dto.Summary != null) book.Summary = dto.Summary;
+            book.ApplyUpdate(dto);
+            book.ValidateInsert();
 
-            if (dto.Words != null) book.Words = dto.Words.Value;
-            if (dto.Rating != null) book.Rating = dto.Rating.Value;
-            if (dto.ReadingStatus != null && Enum.IsDefined(typeof(ReadingStatus), dto.ReadingStatus.Value)) book.ReadingStatus = dto.ReadingStatus.Value;
-            if (dto.WritingStatus != null && Enum.IsDefined(typeof(WritingStatus), dto.WritingStatus.Value)) book.WritingStatus = dto.WritingStatus.Value;
-            if (dto.CurrentChapter != null) book.CurrentChapter = dto.CurrentChapter.Value;
-            if (dto.TotalChapters != null) book.TotalChapters = dto.TotalChapters.Value;
-
-            book.IsActive = dto.IsActive ?? book.IsActive;
-
-            //Console.WriteLine(dto);
-            if (dto.RemovedUrls != null)
+            if (dto.RemoveUrls != null)
             {
-                foreach (var urlId in dto.RemovedUrls)
+                foreach (var urlId in dto.RemoveUrls)
                 {
-                    var url = await _urlService.GetById(urlId);
-                    if (url.Book_Id == null || url.Book_Id != book.Id) throw new InvalidFormException("Url to remove is invalid");
+                    var url = book.Urls.FirstOrDefault(u => u.Id == urlId);
 
-                    await _urlService.Delete(urlId);
+                    if (url == null) throw new InvalidFormException("Url to remove is invalid");
+
+                    await _urlService.ChangeState(url, EntityState.Deleted);
                 }
             }
 
@@ -75,9 +85,9 @@ namespace API.Layers.BookLayers
             {
                 foreach (var url in dto.Urls)
                 {
-                    var newurl = url.Adapt<UrlInsertDTO>();
-                    newurl.Book_Id = book.Id;
-                    await _urlService.Insert(newurl);
+                    var newUrl = url.Adapt<Url>();
+                    newUrl.Book_Id = book.Id;
+                    book.Urls.Add(newUrl);
                 }
             }
 

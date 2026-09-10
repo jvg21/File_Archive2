@@ -16,7 +16,7 @@ namespace API.Types.DTOs.BookDTOs
         public ReadingStatus? ReadingStatus { get; set; }
         public WritingStatus? WritingStatus { get; set; }
         public ICollection<UrlInsertDTO>? Urls { get; set; } = new List<UrlInsertDTO>();
-        public List<int>? RemovedUrls { get; set; } = new List<int>();
+        public List<int>? RemoveUrls { get; set; } = new List<int>();
         public bool? IsActive { get; set; }
     }
 }

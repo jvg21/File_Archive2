@@ -1,4 +1,5 @@
-﻿using API.Types.DTOs.UrlDTOs;
+﻿using API.Types.DTOs.AuthorDTOs;
+using API.Types.DTOs.UrlDTOs;
 using API.Types.Enums;
 
 namespace API.Types.DTOs.BookDTOs
@@ -15,5 +16,6 @@ namespace API.Types.DTOs.BookDTOs
         public ReadingStatus? ReadingStatus { get; set; }
         public WritingStatus? WritingStatus { get; set; }
         public ICollection<UrlInsertDTO>? Urls { get; set; } = new List<UrlInsertDTO>();
+        public ICollection<AuthorMiniInsertDTO>? Authors { get; set; } = new List<AuthorMiniInsertDTO>();
     }
 }

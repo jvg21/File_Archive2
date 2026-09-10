@@ -1,5 +1,6 @@
 ﻿using API.Types.DTOs.UrlDTOs;
 using API.Types.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace API.Types.Interfaces.IUrl
@@ -12,5 +13,6 @@ namespace API.Types.Interfaces.IUrl
         Task<UrlGetDTO> Insert(UrlInsertDTO dto);
         Task<UrlGetDTO> Update(int id, UrlUpdateDTO dto);
         Task<UrlGetDTO> Delete(int id);
+        Task ChangeState(Url url, EntityState state);
     }
 }

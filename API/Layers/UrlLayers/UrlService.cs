@@ -1,8 +1,9 @@
 ﻿using API.Types.DTOs.UrlDTOs;
 using API.Types.Exceptions;
-using API.Types.Models;
 using API.Types.Interfaces.IUrl;
+using API.Types.Models;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Layers.UrlLayers
 {
@@ -51,6 +52,12 @@ namespace API.Layers.UrlLayers
 
             var request = await _urlRepository.Delete(url);
             return request.Adapt<UrlGetDTO>();
+        }
+
+        public async Task ChangeState(Url url, EntityState state)
+        {
+           
+            _urlRepository.ChangeState(url, state);
         }
     }
 }

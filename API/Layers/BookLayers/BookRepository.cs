@@ -39,7 +39,9 @@ namespace API.Layers.BookLayers
 
         public async Task<Book> Insert(Book book)
         {
+    
             await _context.Book.AddAsync(book);
+
             await _context.SaveChangesAsync();
 
             return book;

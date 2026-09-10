@@ -50,5 +50,11 @@ namespace API.Layers.UrlLayers
             return url;
 
         }
+
+        public void ChangeState(Url url,EntityState state)
+        {
+
+            _context.Entry(url).State = state;
+        }
     }
 }
