@@ -21,7 +21,7 @@ export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removeUrls?: n
 
     const [ulrField, setUrlField] = useState<Partial<UrlEntity>>();
 
-    function handdleAddUrl() {
+    function handleAddUrl() {
         if (!ulrField || !ulrField.content) return;
 
         const urlName = ulrField?.name && ulrField.name !== ""
@@ -74,7 +74,7 @@ export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removeUrls?: n
                     }}
                 />
 
-                <button className={style.fieldButton} disabled={!ulrField?.content} type="button" onClick={() => { handdleAddUrl(); }}>Add Url</button>
+                <button className={style.fieldButton} disabled={!ulrField?.content} type="button" onClick={() => { handleAddUrl(); }}>Add Url</button>
             </div>
             }
             {

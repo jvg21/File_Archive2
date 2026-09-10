@@ -15,16 +15,16 @@
   --white: #fff;
   --black: #000;
 
-  --primary-color-50: hsl(293, 45%, 97%);
-  --primary-color-100: hsl(293, 50%, 93%);
-  --primary-color-200: hsl(293, 48%, 85%);
-  --primary-color-300: hsl(293, 45%, 72%);
-  --primary-color-400: hsl(293, 50%, 55%);
-  --primary-color-500: hsl(293, 60%, 40%);
-  --primary-color-600: hsl(293, 65%, 32%);
-  --primary-color-700: hsl(293, 67%, 24%);
-  --primary-color-800: hsl(293, 68%, 17%);
-  --primary-color-900: hsl(293, 70%, 10%);
+  --primary-color-50: hsl(355, 45%, 97%);
+  --primary-color-100: hsl(355, 50%, 93%);
+  --primary-color-200: hsl(355, 48%, 85%);
+  --primary-color-300: hsl(355, 45%, 72%);
+  --primary-color-400: hsl(355, 50%, 55%);
+  --primary-color-500: hsl(355, 60%, 40%);
+  --primary-color-600: hsl(355, 65%, 32%);
+  --primary-color-700: hsl(355, 67%, 24%);
+  --primary-color-800: hsl(355, 68%, 17%);
+  --primary-color-900: hsl(355, 70%, 10%);
 
   --text: var(--primary-color-100);
   --text-h: #1a0e1f;
@@ -32,7 +32,7 @@
   --border: #e4dee8;
   --code-bg: #faf7fc;
   --accent: var(--primary-color-700);
-  --accent-bg: var(--primary-color-200);
+  --accent-bg: var(--primary-color-100);
   --accent-border: var(--primary-color-300);
   --social-bg: rgba(250, 247, 252, 0.5);
 
