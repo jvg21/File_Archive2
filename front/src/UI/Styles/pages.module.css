@@ -7,6 +7,9 @@
 
     padding: 20px;
 
+    @media (max-width: var(--media-sm)) {
+        padding: 12px;
+    }
 }
 
 .button {
@@ -14,7 +17,7 @@
     height: 40px;
 
     background-color: var(--accent);
-    color: var(--text);
+    color: var(--white);
     border: none;
     border-radius: 5px;
 
@@ -22,9 +25,13 @@
 
     margin-bottom: 20px;
 
-
+    transition: background-color var(--transition-fast), transform 100ms var(--ease-standard);
 }
 
 .button:hover {
-    background-color: var(--accent-bg);
+    background-color: var(--accent-border);
+}
+
+.button:active {
+    transform: scale(0.96);
 }

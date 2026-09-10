@@ -43,6 +43,8 @@
 .table tbody tr:hover td {
     background-color: var(--accent-bg);
     transition: background-color 0.55s ease;
+    /* color:var(--text); */
+
 }
 
 /*Modificadores*/
@@ -117,7 +119,7 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-
+   
     padding: 14px 18px;
 }
 
@@ -151,7 +153,7 @@
     gap: 8px;
 
     font-size: 14px;
-    color: var(--text);
+    color: var(--text-h);
 }
 
 .paginationInput {
@@ -253,13 +255,28 @@
 }
 
 /* Responsividade */
-@media (max-width: 768px) {
+@media (max-width: var(--media-md)) {
     .table {
         min-width: 650px;
     }
-
+ 
     .table th,
     .table td {
         padding: 12px 14px;
+    }
+ 
+    .pagination {
+        gap: 10px;
+        padding: 12px 10px;
+    }
+}
+ 
+@media (max-width: var(--media-sm)) {
+    .paginationInfo {
+        font-size: 13px;
+    }
+ 
+    .pagination button {
+        padding: 6px 12px;
     }
 }

@@ -1,3 +1,19 @@
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalPopIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .modalBackground {
     position: absolute;
     top: 0;
@@ -9,6 +25,8 @@
     width: 100%;
     z-index: 1000;
     background-color: rgba(0, 0, 0, 0.35);
+
+    animation: modalFadeIn var(--transition-base);
 }
 
 .modal {
@@ -24,6 +42,8 @@
     overflow-y: auto;
 
     box-shadow: var(--shadow);
+
+    animation: modalPopIn var(--transition-base);
 
     @media(max-height:600px) {
         position: absolute;
@@ -55,7 +75,7 @@
         font-size: 14px;
         cursor: pointer;
 
-        transition: background-color 0.15s ease, color 0.15s ease;
+        transition: background-color var(--transition-fast), color var(--transition-fast);
     }
 
     button:hover {
@@ -101,9 +121,9 @@
     background-color: var(--input-bg);
 
     transition:
-        border-color 0.15s ease,
-        box-shadow 0.15s ease,
-        background-color 0.15s ease;
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast);
 }
 
 .field input:hover:not(:disabled),
@@ -150,7 +170,7 @@
     font-weight: 600;
     cursor: pointer;
 
-    transition: background-color 0.15s ease, transform 0.1s ease;
+    transition: background-color var(--transition-fast), transform 100ms var(--ease-standard);
 }
 
 .fieldButton:hover {
@@ -187,6 +207,8 @@
 
     font-size: 0.82rem;
     color: var(--text-h);
+
+    transition: border-color var(--transition-fast);
 }
 
 .itemRow button {
@@ -208,7 +230,7 @@
     font-weight: 700;
     cursor: pointer;
 
-    transition: opacity 0.15s ease;
+    transition: opacity var(--transition-fast);
 }
 
 .itemRow button:hover {
@@ -233,7 +255,7 @@
     font-weight: 700;
     cursor: pointer;
 
-    transition: opacity 0.15s ease, transform 0.1s ease;
+    transition: opacity var(--transition-fast), transform 100ms var(--ease-standard);
 }
 
 .submitButton:hover {

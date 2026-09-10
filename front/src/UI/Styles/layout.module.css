@@ -12,9 +12,18 @@
     flex: 1;
     overflow-x: auto;
 
-    transition: margin-left 0.2s ease-in-out;
+    transition: margin-left var(--transition-base);
 }
 
 .outletCollapsed {
     margin-left: var(--colapsed-sidebar-width);
+}
+
+/* No mobile a sidebar passa a ser um overlay (ver sidebar.module.css),
+   então o conteúdo não precisa mais reservar espaço lateral. */
+@media (max-width: var(--media-md)) {
+    .outlet,
+    .outletCollapsed {
+        margin-left: 0;
+    }
 }

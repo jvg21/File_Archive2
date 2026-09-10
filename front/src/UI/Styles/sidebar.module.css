@@ -11,7 +11,7 @@
     flex-direction: column;
 
     background-color: var(--accent);
-    transition: width 0.2s ease-in-out;
+    transition: width var(--transition-base), box-shadow var(--transition-base);
 
     overflow: visible;
 }
@@ -32,7 +32,7 @@
     align-items: center;
     justify-content: center;
 
-    background-color: var(--accent-bg);
+    background-color: var(--accent);
 
     flex-shrink: 0;
 }
@@ -77,9 +77,7 @@
 
     cursor: pointer;
 
-    transition:
-        background-color 0.15s ease,
-        color 1.7s ;
+    transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 .sidebarButton svg {
@@ -92,6 +90,7 @@
 
 .sidebarButton:hover {
     background-color: var(--accent-bg);
+    color: var(--text-h);
 }
 
 /* Texto escondido quando recolhida */
@@ -141,9 +140,9 @@
     box-shadow: var(--shadow);
 
     transition:
-        opacity 0.15s ease,
-        transform 0.15s ease,
-        visibility 0.15s ease;
+        opacity var(--transition-fast),
+        transform var(--transition-fast),
+        visibility var(--transition-fast);
 
     z-index: 20;
 }
@@ -187,7 +186,7 @@
     justify-content: center;
 
     padding: 12px;
-    background-color: var(--accent-bg);
+    background-color: var(--accent);
 
     box-sizing: border-box;
 }
@@ -213,8 +212,8 @@
     cursor: pointer;
 
     transition:
-        background-color 0.15s ease,
-        transform 0.15s ease;
+        background-color var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .sidebarFooter button:hover {
@@ -240,4 +239,23 @@
 
 .sidebar.active .sidebarFooter {
     justify-content: flex-end;
+}
+
+/* =========================
+   RESPONSIVO
+   Em telas pequenas a sidebar vira um overlay: fica com
+   largura 0 (escondida) e só ocupa espaço quando "active",
+   sobrepondo o conteúdo em vez de empurrá-lo (ver layout.module.css).
+========================= */
+@media (max-width: var(--media-md)) {
+    .sidebar {
+        width: 0;
+        overflow: hidden;
+        box-shadow: none;
+    }
+
+    .sidebar.active {
+        width: var(--sidebar-width);
+        box-shadow: var(--shadow);
+    }
 }

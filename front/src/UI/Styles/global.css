@@ -1,25 +1,43 @@
+/* =========================================================
+   DESIGN TOKENS
+   Paleta gerada a partir da cor base #5a1464 -> hsl(293, 67%, 24%)
+   Técnica: Hue fixo (293), variando Lightness/Saturation para
+   criar tints (mais claro) e shades (mais escuro) consistentes.
+
+   Breakpoints de referência usados nos módulos deste projeto:
+   sm: 480px | md: 768px | lg: 1024px | xl: 1280px
+========================================================= */
 :root {
-  --text: #c7c5ca;
-  --text-h: #08060d;
-  --bg: #f1f1f1;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #400000;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+
+  --success-green: hsl(140, 60%, 28%);
+  --warning-yellow: hsl(45, 90%, 45%);
+  --failure-red: hsl(355, 65%, 35%);
+  --white: #fff;
+  --black: #000;
+
+  --primary-color-50: hsl(293, 45%, 97%);
+  --primary-color-100: hsl(293, 50%, 93%);
+  --primary-color-200: hsl(293, 48%, 85%);
+  --primary-color-300: hsl(293, 45%, 72%);
+  --primary-color-400: hsl(293, 50%, 55%);
+  --primary-color-500: hsl(293, 60%, 40%);
+  --primary-color-600: hsl(293, 65%, 32%);
+  --primary-color-700: hsl(293, 67%, 24%);
+  --primary-color-800: hsl(293, 68%, 17%);
+  --primary-color-900: hsl(293, 70%, 10%);
+
+  --text: var(--primary-color-100);
+  --text-h: #1a0e1f;
+  --bg: #f7f4f9;
+  --border: #e4dee8;
+  --code-bg: #faf7fc;
+  --accent: var(--primary-color-700);
+  --accent-bg: var(--primary-color-200);
+  --accent-border: var(--primary-color-300);
+  --social-bg: rgba(250, 247, 252, 0.5);
 
   --input-bg: #ffffff;
-  --disabled-bg: #e9e9ec;
-
-  --success-green: rgba(15, 80, 0);
-  --warning-yellow: rgb(190, 200, 0);
-  --failure-red: rgb(65, 0, 0);
-  --white:#fff;
-  --black:#000;
-
-  --colapsed-sidebar-width: 70px;
-  --sidebar-width: 240px;
+  --disabled-bg: #ece7f0;
 
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -27,6 +45,17 @@
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 150ms var(--ease-standard);
+  --transition-base: 250ms var(--ease-standard);
+
+  --media-sm: 480px;
+  --media-md: 720px;
+  --media-lg: 1024px;
+  --media-xl: 1280px;
+  --colapsed-sidebar-width: 70px;
+  --sidebar-width: 240px;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -38,28 +67,50 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
+  @media (max-width: var(--media-lg)) {
     font-size: 16px;
+  }
+
+  @media (max-width: var(--media-sm)) {
+    font-size: 15px;
+    letter-spacing: 0.1px;
   }
 }
 
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #1b0000;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-    --input-bg: #1c1d24;
-    --disabled-bg: #24252d;
+    --text: #b3a8ba;
+    --text-h: #f3f0f5;
+    --bg: #14111a;
+    --border: #2d2735;
+    --code-bg: #1e1a26;
+
+    --accent: hsl(293, 45%, 14%);
+    --accent-bg: hsla(293, 60%, 65%, 0.15);
+    --accent-border: hsla(293, 70%, 70%, 0.5);
+    --social-bg: rgba(30, 26, 38, 0.5);
+
+    --input-bg: #1c1824;
+    --disabled-bg: #26212c;
+
+    --shadow:rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0.01ms;
+    --transition-base: 0.01ms;
   }
 
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 * {
