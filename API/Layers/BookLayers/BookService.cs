@@ -10,6 +10,7 @@ using API.Types.Interfaces.IUrl;
 using API.Types.Models;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Nodes;
 
 namespace API.Layers.BookLayers
 {
@@ -55,9 +56,26 @@ namespace API.Layers.BookLayers
             return request.Adapt<BookGetDTO>();
         }
 
-        public async Task<List<BookGetDTO>> InsertArray(BookInsertDTO[] books)
+        public async Task<BookInsertArrayResultDTO> InsertArray(List<BookInsertDTO> books)
         {
-            return books.Adapt<List<BookGetDTO>>();
+            var success = new List<BookGetDTO>();
+            var failed = new List<BookInsertArrayErrorDTO>();
+
+            foreach (var book in books)
+            {
+                try
+                {
+                    var request = await Insert(book);
+                    success.Add(request);
+                }
+                catch(Exception exception)
+                {
+                    failed.Add(new BookInsertArrayErrorDTO { Entry = book, ErrorMessage = exception.Message });
+                }
+            }
+
+
+            return new BookInsertArrayResultDTO { Success = success, Failed =  failed };
         }
 
         public async Task<BookGetDTO> Update(int id, BookUpdateDTO dto)

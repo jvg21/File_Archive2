@@ -28,7 +28,12 @@ export const BookColumns: TableColumns<BookEntity>[] = [
 
         }
     },
-    { key: "summary", header: "summary" },
+    { key: "summary", header: "summary",
+        render:(value) =>{
+            const summary = value as BookEntity["summary"];
+            return summary.slice(0,20)
+        }
+     },
     {
         key: "currentChapter", header: "Chapters",
         render: (value, row) => {

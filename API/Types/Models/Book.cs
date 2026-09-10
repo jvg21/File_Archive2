@@ -79,6 +79,11 @@ namespace API.Types.Models
                 throw new InvalidFormException("Rating Value Invalid, must be between 0 and 10");
             }
 
+            if(this.TotalChapters != null && this.CurrentChapter !=null && this.TotalChapters < this.CurrentChapter)
+            {
+                throw new InvalidFormException("Current Chapter value is Higher than Total Chapters");
+            }
+
 
             return isValid;
         }
