@@ -8,7 +8,7 @@ import type { ModalFlow } from "../../Data/Types/modalFlow";
 import { useNotification } from "../../Data/Context/notification.context";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
 import { BookColumns } from "./book.columns";
-import { createBook, deleteBook, generateEmptyBook, getBookData, updateBook } from "./book.functions";
+import { createBook, deleteBook, generateEmptyBook, getBookData, importInsertBookSheet, updateBook } from "./book.functions";
 import { BookForm } from "./book.form";
 import { Config } from "../../Config/config";
 
@@ -25,11 +25,14 @@ export const BookPage = () => {
     const [tableData, setTableData] = useState<Entity[] | null>(null);
     const [selectedEntity, SetSelectedEntity] = useState<Entity>(generateEmpty())
 
+    // const [importSheet, setImportSheet] = useState<FileList>();
+
     /**PageStates */
     const [isLoading, setLoading] = useState<boolean>(true);
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
 
+    // console.log(importSheet)
     useEffect(() => {
         getBookData(setTableData, showNotification);
         setLoading(false);
@@ -66,6 +69,8 @@ export const BookPage = () => {
         <div className={pageStyle.main}>
 
             <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add +</button>
+
+            <input type="file" multiple={false} id="input" onChange={(e) => e.target.files ? importInsertBookSheet(e.target.files[0],showNotification) : undefined} />
 
             {/* /***LOAD THE TABLE COMPONENT* */}
             {TableMemo}

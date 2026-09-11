@@ -1,9 +1,6 @@
-﻿using API.Types.DTOs.AuthorDTOs;
-using API.Types.DTOs.BookAuthorDTOs;
-using API.Types.DTOs.BookDTOs;
+﻿using API.Types.DTOs.BookAuthorDTOs;
 using API.Types.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace API.Types.Interfaces.IBook
 {

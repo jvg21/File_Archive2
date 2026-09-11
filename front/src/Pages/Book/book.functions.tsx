@@ -41,8 +41,8 @@ export async function updateBook(entity: Entity, showNotification: ShowNotificat
     const payload = {
         ...entity,
         urls: entity.urls?.filter((url) => !url.id),
-      
-        
+
+
     };
 
     const request = await DataStore.update(payload);
@@ -67,6 +67,11 @@ export async function deleteBook(id: number, showNotification: ShowNotificationT
     showNotification(request.message, 'success')
 }
 
+
+export function importInsertBookSheet(file: File, showNotification: ShowNotificationType) {
+    console.log(file)
+    if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx",'failure');
+}
 
 
 export function generateEmptyBook(): Entity {
