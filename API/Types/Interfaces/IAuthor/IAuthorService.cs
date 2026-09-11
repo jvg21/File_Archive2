@@ -7,6 +7,7 @@ namespace API.Types.Interfaces.IAuthor
     public interface IAuthorService
     {
         Task<List<AuthorGetDTO>> GetAll();
+        Task<List<AuthorMiniGetDTO>> GetAllMini();
         Task<AuthorGetDTO> GetById(int id);
         Task<bool> Exists(Expression<Func<Author, bool>> predicate);
         Task<List<Author>> Get(Expression<Func<Author, bool>> predicate);

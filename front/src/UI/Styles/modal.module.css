@@ -15,7 +15,7 @@
 }
 
 .modalBackground {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     display: flex;
@@ -81,6 +81,7 @@
     button:hover {
         background-color: var(--failure-red);
         color: var(--white);
+        
     }
 }
 

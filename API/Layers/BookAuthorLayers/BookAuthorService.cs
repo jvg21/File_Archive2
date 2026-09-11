@@ -1,8 +1,9 @@
 ﻿using API.Types.DTOs.BookAuthorDTOs;
+using API.Types.Exceptions;
 using API.Types.Interfaces.IBook;
 using API.Types.Models;
-using API.Types.Exceptions;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Layers.BookAuthorLayers
 {
@@ -41,6 +42,12 @@ namespace API.Layers.BookAuthorLayers
         {
             var request = await _bookAuthorRepository.Delete(dto.Adapt<BookAuthor>());
             return request.Adapt<BookAuthorMiniGetDTO>();
+        }
+
+        public async Task ChangeState(BookAuthor bookAuthor, EntityState state)
+        {
+
+            _bookAuthorRepository.ChangeState(bookAuthor, state);
         }
     }
 }

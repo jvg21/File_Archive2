@@ -20,6 +20,17 @@ export async function getAuthorData(setTableData: React.Dispatch<React.SetStateA
     setTableData(request.data as Entity[])
 };
 
+export async function getAuthorMiniData(setTableData: React.Dispatch<React.SetStateAction<Entity[] | null>>, showNotification: ShowNotificationType): Promise<void> {
+
+    const request: RequestReturn = await DataStore.getAllMini();
+
+    if (request.status !== 200) {
+        showNotification(request.message, 'failure')
+        return
+    }
+    setTableData(request.data as Entity[])
+};
+
 
 /******SUBMIT FUNCIOTIONS ***********/
 export async function createAuthor(entity: Entity, showNotification: ShowNotificationType): Promise<void> {

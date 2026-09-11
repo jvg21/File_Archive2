@@ -6,7 +6,7 @@ import { getAllWritingStatus } from "../../Data/Enums/writingStatus.enum";
 import { getAllReadingStatus } from "../../Data/Enums/readingStatus.enum";
 import { useEffect, useState } from "react";
 import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
-import { getAuthorData } from "../Author/author.functions";
+import { getAuthorMiniData } from "../Author/author.functions";
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
 
 
@@ -24,32 +24,58 @@ export const BookForm = (props: BookFormProps) => {
     const { flow, onSubmit, entity, setEntity, showNotification } = props;
 
     const [authors, SetAuthors] = useState<AuthorEntity[] | null>(null);
-    const [authorField, setAuthorField] = useState<AuthorEntity>();
+    const [authorField, setAuthorField] = useState<AuthorEntity | null>(null);
 
     const canEdit = flow !== 'delete';
 
+    console.log(entity)
+
     function HandleAddAuthor() {
-        if(!authorField || !authorField.id){
-            showNotification("Please select a author.", "failure");
+        if (!authorField || !authorField.id) {
+            return;
+        }
+        const authorsArray = entity.authors || [];
+
+        if (authorsArray.filter((author) => author.id === authorField.id).length !== 0) {
+            console.log(entity.authors)
             return;
         }
 
-        const authors = entity.authors || [];
-
-        authors.push(authorField);
-        setEntity((prev)=>({...prev,authors}))
+        authorField.isActive === false;
+        authorsArray.push(authorField);
         
+         setEntity((prev) => (
+            { ...prev, 
+                authors: authorsArray,
+                removeAuthors: prev.removeAuthors?.filter((authorId)=> authorId !== authorField.id)
+            }
+        ))
+
+        setAuthorField(null);
+
         return;
     }
 
-    function HandleRemoveAuthor(author: Partial<AuthorEntity>) {
+    function HandleRemoveAuthor(removeAuthor: Partial<AuthorEntity>) {
+        if (!removeAuthor.id) return;
+        
+        const removeAuthorArray = entity.removeAuthors || [];
+        removeAuthorArray.push(removeAuthor.id);
+
+        setEntity((prev) => (
+            { ...prev, 
+                authors: prev.authors?.filter((author) => removeAuthor.id !== author.id),
+                removeAuthors: removeAuthorArray
+            }
+        ))
+
         return;
     }
 
 
     useEffect(() => {
-        getAuthorData(SetAuthors, showNotification)
-    })
+        getAuthorMiniData(SetAuthors, showNotification)
+    }, [])
 
     return (
         <>
@@ -157,10 +183,10 @@ export const BookForm = (props: BookFormProps) => {
 
                             <select value={authorField?.id ?? -1}
                                 onChange={(e) => {
-                                    setAuthorField(authors?.find((author) => author.id === Number(e.target.value)))
+                                    setAuthorField(authors?.find((author) => author.id === Number(e.target.value)) ?? null)
                                 }}
                             >
-                                <option value="" disabled selected>Authors.....</option>
+                                <option key={0} value={-1} disabled> Authors.....</option>
                                 {
                                     authors && authors.map((author) =>
                                         <option key={author.id} value={author.id}>

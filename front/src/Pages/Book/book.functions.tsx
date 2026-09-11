@@ -40,7 +40,9 @@ export async function updateBook(entity: Entity, showNotification: ShowNotificat
 
     const payload = {
         ...entity,
-        urls: entity.urls?.filter((url) => !url.id)
+        urls: entity.urls?.filter((url) => !url.id),
+      
+        
     };
 
     const request = await DataStore.update(payload);

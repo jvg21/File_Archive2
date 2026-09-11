@@ -1,5 +1,6 @@
 ﻿
 using API.Layers.UrlLayers;
+using API.Types.DTOs.BookAuthorDTOs;
 using API.Types.DTOs.BookDTOs;
 using API.Types.DTOs.UrlDTOs;
 using API.Types.Enums;
@@ -19,11 +20,13 @@ namespace API.Layers.BookLayers
         private readonly IBookRepository _bookRepository;
         private readonly IAuthorService _authorService;
         private readonly IUrlService _urlService;
-        public BookService(IBookRepository bookRepository, IAuthorService authorService, IUrlService urlService)
+        private readonly IBookAuthorService _bookAuthorService;
+        public BookService(IBookRepository bookRepository, IAuthorService authorService, IUrlService urlService, IBookAuthorService bookAuthorService)
         {
             this._bookRepository = bookRepository;
             this._authorService = authorService;
             this._urlService = urlService;
+            this._bookAuthorService = bookAuthorService;
         }
 
         public async Task<List<BookGetDTO>> GetAll()
@@ -31,6 +34,13 @@ namespace API.Layers.BookLayers
             var request = await this._bookRepository.GetAll();
             return request.Adapt<List<BookGetDTO>>();
         }
+
+        public async Task<List<BookMiniGetDTO>> GetAllMini()
+        {
+            var request = await this._bookRepository.GetAll();
+            return request.Adapt<List<BookMiniGetDTO>>();
+        }
+
         public async Task<BookGetDTO> GetById(int id)
         {
             var request = await this._bookRepository.GetById(id);
@@ -87,12 +97,29 @@ namespace API.Layers.BookLayers
             book.ApplyUpdate(dto);
             book.ValidateInsert();
 
+            if (dto.removeAuthors != null)
+            {
+                foreach(var authorId in dto.removeAuthors)
+                {
+                    var bookAuthorKey = await _bookAuthorService.Exists(new BookAuthorSearchDTO { Author_Id = authorId, Book_Id = book.Id });
+
+                    if (bookAuthorKey) await _bookAuthorService.ChangeState(new BookAuthor { Author_Id = authorId, Book_Id = book.Id }, EntityState.Deleted);
+                }
+            }
+
+            if (dto.Authors != null)
+            {
+                foreach (var author in dto.Authors)
+                {
+                    book.Authors.Add(author);
+                }
+            }
+
             if (dto.RemoveUrls != null)
             {
                 foreach (var urlId in dto.RemoveUrls)
                 {
                     var url = book.Urls.FirstOrDefault(u => u.Id == urlId);
-
                     if (url == null) throw new InvalidFormException("Url to remove is invalid");
 
                     await _urlService.ChangeState(url, EntityState.Deleted);

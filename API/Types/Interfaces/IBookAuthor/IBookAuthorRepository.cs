@@ -1,4 +1,5 @@
 ﻿using API.Types.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace API.Types.Interfaces.IBook
@@ -11,5 +12,6 @@ namespace API.Types.Interfaces.IBook
         Task<bool> Exists(BookAuthor bookAuthor);
         Task<BookAuthor> Insert(BookAuthor bookAuthor);
         Task<BookAuthor> Delete(BookAuthor bookAuthor);
+        void ChangeState(BookAuthor url, EntityState state);
     }
 }

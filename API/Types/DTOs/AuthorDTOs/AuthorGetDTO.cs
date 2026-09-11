@@ -9,6 +9,6 @@ namespace API.Types.DTOs.AuthorDTOs
         public string Name { get; set; } = string.Empty;
         public List<UrlGetDTO> Urls { get; set; } = new List<UrlGetDTO>();
         public List<BookMiniGetDTO>? Books { get; set; } = new List<BookMiniGetDTO>();
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } 
     }
 }

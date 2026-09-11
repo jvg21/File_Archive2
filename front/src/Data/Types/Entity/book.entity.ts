@@ -18,4 +18,5 @@ export interface BookEntity {
     removeUrls?: number[],
     
     authors?: Partial<AuthorEntity>[];
+    removeAuthors?:number[];
 }
