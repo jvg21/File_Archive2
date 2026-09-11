@@ -26,6 +26,12 @@ namespace API.Layers.AuthorLayers
             var request = await this._authorRepository.GetAll();
             return request.Adapt<List<AuthorGetDTO>>();
         }
+        public async Task<List<AuthorMiniGetDTO>> GetAllMini()
+        {
+            var request = await this._authorRepository.GetAll();
+            return request.Adapt<List<AuthorMiniGetDTO>>();
+        }
+
         public async Task<AuthorGetDTO> GetById(int id)
         {
             var request = await this._authorRepository.GetById(id);

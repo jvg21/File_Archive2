@@ -22,6 +22,13 @@ namespace API.Layers.BookLayers
             return Ok(response);
         }
 
+        [HttpGet("/mini")]
+        public async Task<IActionResult> GetAllMini()
+        {
+            var response = await _bookService.GetAllMini();
+            return Ok(response);
+        }
+
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {

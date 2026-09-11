@@ -5,5 +5,6 @@ export interface AuthorEntity  {
     name:string,
     urls?: Partial<UrlEntity>[],
     removeUrls?: number[],
+    isActive?:boolean
     // books?:Partial<BookEntity>[]
 }

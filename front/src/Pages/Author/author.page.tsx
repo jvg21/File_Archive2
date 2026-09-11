@@ -26,12 +26,14 @@ export const AuthorPage = () => {
     const [selectedEntity, SetSelectedEntity] = useState<Entity>(generateEmpty())
 
     /**PageStates */
+    const [isLoading, setLoading] = useState<boolean>(true);
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
 
 
     useEffect(() => {
         getAuthorData(setTableData, showNotification);
+        setLoading(false);
 
     }, [])
 
@@ -58,6 +60,7 @@ export const AuthorPage = () => {
             onRowClick={SetSelectedEntity}
             keyExtractor={(row) => row.id}
             initialPageSize={Config.defaultTableDataSize}
+            loading={isLoading}
         />, [tableData])
 
     return (

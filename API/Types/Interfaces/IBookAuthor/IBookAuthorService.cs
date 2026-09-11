@@ -2,6 +2,7 @@
 using API.Types.DTOs.BookAuthorDTOs;
 using API.Types.DTOs.BookDTOs;
 using API.Types.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace API.Types.Interfaces.IBook
@@ -13,6 +14,8 @@ namespace API.Types.Interfaces.IBook
         Task<bool> Exists(BookAuthorSearchDTO dto);
         Task<BookAuthorMiniGetDTO> LinkBookToAuthor(BookAuthorInsertDTO dto);
         Task<BookAuthorMiniGetDTO> DeleteLinkBookToAuthor(BookAuthorInsertDTO dto);
+        Task ChangeState(BookAuthor bookAuthor, EntityState state);
+
 
     }
 }

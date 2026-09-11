@@ -21,21 +21,20 @@ export const BookPage = () => {
     /**Hooks**/
     const { showNotification } = useNotification()
 
-
     /* table data*/
     const [tableData, setTableData] = useState<Entity[] | null>(null);
     const [selectedEntity, SetSelectedEntity] = useState<Entity>(generateEmpty())
 
     /**PageStates */
+    const [isLoading, setLoading] = useState<boolean>(true);
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
 
-
     useEffect(() => {
         getBookData(setTableData, showNotification);
+        setLoading(false);
 
     }, [])
-
 
     async function handleSubmit() {
         if (modalPage === 'create') await createBook(selectedEntity, showNotification)
@@ -60,6 +59,7 @@ export const BookPage = () => {
             onRowClick={SetSelectedEntity}
             keyExtractor={(row) => row.id}
             initialPageSize={Config.defaultTableDataSize}
+            loading={isLoading}
         />, [tableData])
 
     return (
@@ -78,9 +78,9 @@ export const BookPage = () => {
                     <BookForm
                         entity={selectedEntity}
                         setEntity={SetSelectedEntity}
+                        showNotification={showNotification}
                         flow={modalPage}
                         onSubmit={handleSubmit}
-
                     />
                 </ModalFrame>
             }

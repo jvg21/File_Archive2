@@ -4,21 +4,78 @@ import { UrlForms } from "../../UI/Components/Forms/url.forms";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
 import { getAllWritingStatus } from "../../Data/Enums/writingStatus.enum";
 import { getAllReadingStatus } from "../../Data/Enums/readingStatus.enum";
+import { useEffect, useState } from "react";
+import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
+import { getAuthorMiniData } from "../Author/author.functions";
+import type { ShowNotificationType } from "../../Data/Context/notification.context";
 
 
 interface BookFormProps {
 
     flow: ModalFlow,
     entity: BookEntity,
+    showNotification: ShowNotificationType,
     setEntity: React.Dispatch<React.SetStateAction<BookEntity>>,
     onSubmit: () => void,
 }
 
 export const BookForm = (props: BookFormProps) => {
 
-    const { flow, onSubmit, entity, setEntity } = props;
+    const { flow, onSubmit, entity, setEntity, showNotification } = props;
+
+    const [authors, SetAuthors] = useState<AuthorEntity[] | null>(null);
+    const [authorField, setAuthorField] = useState<AuthorEntity | null>(null);
 
     const canEdit = flow !== 'delete';
+
+    console.log(entity)
+
+    function HandleAddAuthor() {
+        if (!authorField || !authorField.id) {
+            return;
+        }
+        const authorsArray = entity.authors || [];
+
+        if (authorsArray.filter((author) => author.id === authorField.id).length !== 0) {
+            console.log(entity.authors)
+            return;
+        }
+
+        authorField.isActive === false;
+        authorsArray.push(authorField);
+        
+         setEntity((prev) => (
+            { ...prev, 
+                authors: authorsArray,
+                removeAuthors: prev.removeAuthors?.filter((authorId)=> authorId !== authorField.id)
+            }
+        ))
+
+        setAuthorField(null);
+
+        return;
+    }
+
+    function HandleRemoveAuthor(removeAuthor: Partial<AuthorEntity>) {
+        if (!removeAuthor.id) return;
+        
+        const removeAuthorArray = entity.removeAuthors || [];
+        removeAuthorArray.push(removeAuthor.id);
+
+        setEntity((prev) => (
+            { ...prev, 
+                authors: prev.authors?.filter((author) => removeAuthor.id !== author.id),
+                removeAuthors: removeAuthorArray
+            }
+        ))
+
+        return;
+    }
+
+
+    useEffect(() => {
+        getAuthorMiniData(SetAuthors, showNotification)
+    }, [])
 
     return (
         <>
@@ -118,6 +175,39 @@ export const BookForm = (props: BookFormProps) => {
                                 onChange={(e) => { setEntity((prev) => ({ ...prev, rating: Number(e.target.value) })) }}
                             />
                         </div>
+
+
+
+                        <div className={style.field}>
+                            <label>Authors: </label>
+
+                            <select value={authorField?.id ?? -1}
+                                onChange={(e) => {
+                                    setAuthorField(authors?.find((author) => author.id === Number(e.target.value)) ?? null)
+                                }}
+                            >
+                                <option key={0} value={-1} disabled> Authors.....</option>
+                                {
+                                    authors && authors.map((author) =>
+                                        <option key={author.id} value={author.id}>
+                                            {author.name}
+                                        </option>
+                                    )
+                                }
+                            </select>
+                        </div>
+                        <button className={style.fieldButton} disabled={!authorField} type="button" onClick={() => { HandleAddAuthor(); }}>Add Author</button>
+
+                        {
+                            entity.authors && entity.authors.length > 0 &&
+                            entity.authors.map((author) =>
+                                <div key={author.id} className={style.itemRow}>
+                                    <span>{author.name ?? ""}</span>
+                                    <button type="button" onClick={() => HandleRemoveAuthor(author)}> X </button>
+                                </div>
+                            )
+                        }
+
 
                         <UrlForms
                             entity={entity}

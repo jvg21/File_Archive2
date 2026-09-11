@@ -27,6 +27,7 @@ export type TableProps<T> = {
     // resetFuncition: () => void,
     actions?: TableActions<T>[],
     pagination?: boolean
+    loading?: boolean
 }
 
 export function Table<T extends Object>({
@@ -38,6 +39,7 @@ export function Table<T extends Object>({
     emptyMessage = "No Data",
     initialPageSize = 25,
     pagination = true,
+    loading = false
 
 }: TableProps<T>) {
 
@@ -58,6 +60,7 @@ export function Table<T extends Object>({
 
     {/**NO DATA*/ }
     if (tableData.length <= 0) return <div className={style.empty}>{emptyMessage}</div>
+    if (loading) return <div className={style.empty}>loading........</div>
 
     return (
         <div className={style.tableWrapper}>

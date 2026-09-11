@@ -9,6 +9,7 @@ namespace API.Types.Interfaces.IBook
     public interface IBookService
     {
         Task<List<BookGetDTO>> GetAll();
+        Task<List<BookMiniGetDTO>> GetAllMini();
         Task<BookGetDTO> GetById(int id);
         Task<BookGetDTO> Insert(BookInsertDTO dto);
         Task<BookInsertArrayResultDTO> InsertArray(List<BookInsertDTO> books);

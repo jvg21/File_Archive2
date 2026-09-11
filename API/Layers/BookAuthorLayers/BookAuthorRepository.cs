@@ -51,5 +51,10 @@ namespace API.Layers.BookAuthorLayers
             await _context.SaveChangesAsync();
             return bookAuthor;
         }
+
+        public async void ChangeState(BookAuthor bookAuthor,EntityState state ) { 
+            _context.Entry(bookAuthor).State = state;
+
+        }
     }
 }
