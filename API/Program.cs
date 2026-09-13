@@ -33,12 +33,17 @@ builder.Services.AddSwaggerGen(options =>
 
 #region Database Connection
 
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseNpgsql(
+//        builder.Configuration.GetConnectionString("DefaultConnection")
+//    )
+//);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+        builder.Configuration.GetConnectionString("DockerConnection")
     )
 );
-
 #endregion
 
 #region Dependency Injection
