@@ -20,11 +20,11 @@ export type NavItemProps = {
 
 
 export const NAV_ITEMS: NavItemProps[] = [
-    { id: "author", label: "Author", logo: IoPerson, click: false },
-    { id: "book", label: "Book", logo: FaBook, click: false },
-    { id: "file", label: "Files", logo: FaFileArchive, click: false },
-    { id: "comic", label: "Comic", logo: FaBookOpen, click: false },
-    { id: "notes", label: "Notes", logo: GiNotebook, click: false },
-    { id: "image", label: "Image", logo: FaImage, click: false },
+    { id: "author", label: "Author", logo: IoPerson, click: true },
+    { id: "book", label: "Book", logo: FaBook, click: true },
+    { id: "file", label: "Files", logo: FaFileArchive, click: true },
+    { id: "comic", label: "Comic", logo: FaBookOpen, click: true },
+    { id: "notes", label: "Notes", logo: GiNotebook, click: true },
+    { id: "image", label: "Image", logo: FaImage, click: true },
 ];
 
