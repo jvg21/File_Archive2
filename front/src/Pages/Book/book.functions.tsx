@@ -1,7 +1,7 @@
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
 import { BookDataStore } from "../../Data/Datastore/book.datastore";
 import { getReadingStatusByName, IsValidReadingStatusName } from "../../Data/Enums/readingStatus.enum";
-import {  getWritingStatusByName, IsValidWritingStatusName } from "../../Data/Enums/writingStatus.enum";
+import { getWritingStatusByName, IsValidWritingStatusName } from "../../Data/Enums/writingStatus.enum";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
 import type { RequestReturn } from "../../Data/Types/requestReturn";
 import * as XLSX from 'xlsx';
@@ -88,7 +88,7 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
 
         const books: BookEntity[] = []
         jsonData.forEach((bookRow: string[], index) => {
-            if (index === 0 || bookRow[0] === "" ) return;
+            if (index === 0 || bookRow[0] === "") return;
 
             const book: BookEntity = {
                 id: -1,
@@ -108,19 +108,19 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
         });
 
         console.log(books)
+
+
+        // const request = await DataStore.createArray([]);
+
+        // if (request.status !== 200) {
+        //     showNotification(request.message, 'failure')
+        //     return
+        // }
+        // showNotification(request.message, 'success')
     }
-    catch {
-
+    catch (e) {
+        showNotification(e instanceof Error ? e.message : 'Error Importing', 'failure')
     }
-
-
-    // const request = await DataStore.createArray([]);
-
-    // if (request.status !== 200) {
-    //     showNotification(request.message, 'failure')
-    //     return
-    // }
-    // showNotification(request.message, 'success')
 }
 
 
