@@ -41,7 +41,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DockerConnection")
+        builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
 #endregion

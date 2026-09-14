@@ -1,8 +1,10 @@
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
 import { BookDataStore } from "../../Data/Datastore/book.datastore";
+import { getReadingStatusByName, IsValidReadingStatusName } from "../../Data/Enums/readingStatus.enum";
+import {  getWritingStatusByName, IsValidWritingStatusName } from "../../Data/Enums/writingStatus.enum";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
 import type { RequestReturn } from "../../Data/Types/requestReturn";
-
+import * as XLSX from 'xlsx';
 
 type Entity = BookEntity;
 const DataStore = new BookDataStore();
@@ -68,9 +70,57 @@ export async function deleteBook(id: number, showNotification: ShowNotificationT
 }
 
 
-export function importInsertBookSheet(file: File, showNotification: ShowNotificationType) {
-    console.log(file)
-    if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx",'failure');
+export async function importInsertBookSheet(file: File, showNotification: ShowNotificationType) {
+    // console.log(file.)
+    if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx", 'failure');
+
+    try {
+
+        const data = await file.arrayBuffer();
+        const workbook = XLSX.read(data);
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData: [][] = XLSX.utils.sheet_to_json(worksheet, {
+            header: 1,
+            defval: "",
+        });
+
+        console.log(jsonData)
+
+        const books: BookEntity[] = []
+        jsonData.forEach((bookRow: string[], index) => {
+            if (index === 0 || bookRow[0] === "" ) return;
+
+            const book: BookEntity = {
+                id: -1,
+                title: bookRow[0],
+                summary: bookRow[1],
+                notes: bookRow[2],
+                rating: bookRow[3] !== "" ? Number(bookRow[3]) : undefined,
+                currentChapter: bookRow[4] !== "" ? Number(bookRow[4]) : undefined,
+                totalChapters: bookRow[5] !== "" ? Number(bookRow[5]) : undefined,
+                words: bookRow[6] !== "" ? Number(bookRow[6]) : undefined,
+                readingStatus: IsValidReadingStatusName(bookRow[7]) ? getReadingStatusByName(bookRow[7]) : undefined,
+                writingStatus: IsValidWritingStatusName(bookRow[8]) ? getWritingStatusByName(bookRow[8]) : undefined,
+                authors: [],
+                urls: []
+            }
+            books.push(book);
+        });
+
+        console.log(books)
+    }
+    catch {
+
+    }
+
+
+    // const request = await DataStore.createArray([]);
+
+    // if (request.status !== 200) {
+    //     showNotification(request.message, 'failure')
+    //     return
+    // }
+    // showNotification(request.message, 'success')
 }
 
 
