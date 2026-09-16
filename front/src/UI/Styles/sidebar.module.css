@@ -1,24 +1,35 @@
+/* =========================
+   SIDEBAR
+========================= */
+
 .sidebar {
     position: fixed;
-    top: 0;
+
+    top: var(--header-height);
     left: 0;
-    height: 100vh;
+
     width: var(--colapsed-sidebar-width);
+    height: calc(100vh);
+
     z-index: 10;
 
     display: flex;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
 
     background-color: var(--accent);
-    transition: width var(--transition-base), box-shadow var(--transition-base);
 
     overflow: visible;
+
+    transition:
+        width var(--transition-base),
+        box-shadow var(--transition-base);
 }
 
 .sidebar.active {
     width: var(--sidebar-width);
 }
+
 
 /* =========================
    HEADER
@@ -26,90 +37,220 @@
 
 .sidebarHeader {
     width: 100%;
-    height: 150px;
+
+    flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     background-color: var(--accent);
-
-    flex-shrink: 0;
 }
 
+
 /* =========================
-   ITEMS
+   CONTENT
+========================= */
+
+.sidebarContent {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    overflow-x: visible;
+
+    flex: 1;
+}
+
+
+/* =========================
+   ITEM
 ========================= */
 
 .sidebarItem {
-    width: 100%;
     position: relative;
 
+    width: 100%;
+
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    align-items: stretch;
 }
+
 
 /* =========================
    BUTTON / LINK
 ========================= */
 
 .sidebarButton {
+    position: relative;
+
     width: 100%;
     min-height: 60px;
 
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+
     gap: 18px;
 
-    padding: 0 24px;
+    padding: 0 20px;
+
     border: none;
     outline: none;
-    text-decoration: none;
-    white-space: nowrap;
 
     background-color: transparent;
     color: var(--text);
 
+    text-decoration: none;
+    white-space: nowrap;
+
+    font-family: inherit;
     font-size: 16px;
 
     cursor: pointer;
 
-    transition: background-color var(--transition-base), color var(--transition-base);
+    box-sizing: border-box;
+
+    transition: all 2s
+        background-color var(--transition-base),
+        color var(--transition-base);
+
 }
 
-.sidebarButton svg {
-    min-width: 22px;
-    width: 22px;
-    height: 22px;
-
-    display: block;
-}
 
 .sidebarButton:hover {
     background-color: var(--accent-bg);
     color: var(--text-h);
 }
 
-/* Texto escondido quando recolhida */
+.sidebarButton svg {
+    flex-shrink: 1;
+
+    width: 22px;
+    height: 22px;
+
+}
+
+
+/* =========================
+   BUTTON ABERTO
+========================= */
+
+.sidebarButton.open {
+    background-color: var(--accent-bg);
+    color: var(--text-h);
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.sidebarButton span {
+    overflow: hidden;
+
+    opacity: 1;
+
+    transition:
+        opacity var(--transition-base);
+}
+
+
+/* Sidebar recolhida */
+
+.sidebarButton.colapsed {
+    justify-content: center;
+
+    padding: 0;
+}
+
 .sidebarButton.colapsed span {
     display: none;
 }
 
+
 /* =========================
-   TOOLKIT / TOOLTIP
+   SETA DOS CHILDREN
+========================= */
+
+.childrenArrow {
+    margin-left: auto;
+
+    width: 12px !important;
+    height: 12px !important;
+
+    transition:
+        transform var(--transition-fast);
+}
+
+.sidebarButton.open .childrenArrow {
+    transform: rotate(180deg);
+}
+
+
+/* =========================
+   CHILDREN
+========================= */
+
+.sidebarChildren {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+        max-height var(--transition-base),
+        opacity var(--transition-fast);
+}
+
+.sidebarChildren.show {
+    max-height: 500px;
+
+    opacity: 1;
+}
+
+
+/* =========================
+   CHILD ITEM
+========================= */
+
+.childItem {
+    width: 100%;
+}
+
+
+/*
+   Indentação dos filhos.
+   Como eles não possuem ícone,
+   usamos padding para ficarem
+   visualmente abaixo do pai.
+*/
+
+.childItem .sidebarButton {
+    min-height: 48px;
+
+    padding-left: 60px;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   TOOLTIP
 ========================= */
 
 .sidebarToolkit {
     display: none;
 }
 
-/*
-   Quando a sidebar está recolhida,
-   mostra o nome do item ao passar o mouse.
-*/
 .sidebarToolkit.colapsed {
     position: absolute;
 
@@ -144,10 +285,12 @@
         transform var(--transition-fast),
         visibility var(--transition-fast);
 
-    z-index: 20;
+    z-index: 100;
 }
 
-/* Pequena seta do tooltip */
+
+/* Seta do tooltip */
+
 .sidebarToolkit.colapsed::before {
     content: "";
 
@@ -164,35 +307,44 @@
     background-color: var(--accent-bg);
 }
 
-/* Mostra tooltip ao passar no item */
-.sidebarItem:hover .sidebarToolkit.colapsed {
+
+/* Mostrar tooltip */
+
+.sidebarItem:hover>.sidebarToolkit.colapsed {
     opacity: 1;
     visibility: visible;
 
-    transform: translateY(-50%) translateX(3px);
+    transform:
+        translateY(-50%) translateX(3px);
 }
 
+
+/* Não mostrar tooltip nos children */
+
+.childItem .sidebarToolkit {
+    display: none;
+}
+
+
 /* =========================
-   FOOTER
+   BOTÃO COLLAPSE
 ========================= */
 
-.sidebarFooter {
+.sidebarColapseButton {
     width: 100%;
-
-    margin-top: auto;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
     padding: 12px;
-    background-color: var(--accent);
 
     box-sizing: border-box;
+
+    background-color: var(--accent);
 }
 
-/* Botão de abrir/fechar */
-.sidebarFooter button {
+.sidebarColapseButton button {
     width: 100%;
     height: 44px;
 
@@ -209,6 +361,7 @@
     color: var(--text);
 
     font-size: 20px;
+
     cursor: pointer;
 
     transition:
@@ -216,18 +369,20 @@
         transform var(--transition-fast);
 }
 
-.sidebarFooter button:hover {
-    background-color: var(--accent);
+.sidebarColapseButton button:hover {
+    background-color: var(--accent-bg);
+    color: var(--text-h);
 }
 
-.sidebarFooter button:active {
+.sidebarColapseButton button:active {
     transform: scale(0.92);
 }
 
-.sidebarFooter button svg {
+.sidebarColapseButton button svg {
     width: 20px;
     height: 20px;
 }
+
 
 /* =========================
    SIDEBAR ABERTA
@@ -237,25 +392,122 @@
     justify-content: flex-start;
 }
 
-.sidebar.active .sidebarFooter {
+.sidebar.active .sidebarColapseButton {
     justify-content: flex-end;
 }
 
+
 /* =========================
-   RESPONSIVO
-   Em telas pequenas a sidebar vira um overlay: fica com
-   largura 0 (escondida) e só ocupa espaço quando "active",
-   sobrepondo o conteúdo em vez de empurrá-lo (ver layout.module.css).
+   SIDEBAR RECOLHIDA
 ========================= */
-@media (max-width: var(--media-md)) {
+
+.sidebar:not(.active) .sidebarButton {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+.sidebarContent::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebarContent::-webkit-scrollbar-thumb {
+    background-color: var(--accent-bg);
+
+    border-radius: 10px;
+}
+.sidebarChildren {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    max-height: 0;
+    overflow: hidden;
+
+    opacity: 0;
+
+    transition:
+        max-height var(--transition-base),
+        opacity var(--transition-fast);
+}
+
+.sidebarChildren.show {
+    max-height: 500px;
+    opacity: 1;
+}
+
+.sidebarChildren.colapsed {
+    position: absolute;
+
+    top: 0;
+    left: calc(100% + 8px);
+
+    width: 200px;
+
+    max-height: none;
+
+    overflow: visible;
+
+    padding: 6px 0;
+
+    background-color: var(--accent);
+
+    border-radius: 8px;
+
+    box-shadow: var(--shadow);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateX(-5px);
+
+    pointer-events: none;
+
+    transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast),
+        visibility var(--transition-fast);
+}
+
+.sidebarChildren.colapsed.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.sidebarChildren.colapsed .sidebarButton {
+    justify-content: flex-start;
+    padding: 0 20px;
+    min-height: 48px;
+}
+
+.sidebarChildren.colapsed .sidebarButton span {
+    display: inline;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+
     .sidebar {
         width: 0;
+
         overflow: hidden;
+
         box-shadow: none;
     }
 
     .sidebar.active {
         width: var(--sidebar-width);
+
+        overflow: visible;
+
         box-shadow: var(--shadow);
     }
 }

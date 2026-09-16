@@ -131,6 +131,37 @@ export class BookDataStore {
         return response;
     }
 
+      async createArray(entities:Entity[]): Promise<RequestReturn> {
+        const response = new RequestReturn();
+
+        try {
+            const request = await fetch(`${this.URL}/array`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify( entities )
+                // credentials: 'include'
+            })
+
+            response.status = request.status;
+            if (response.status !== 200) {
+
+                const data = await request.json()
+                response.message = data.message || "";
+                return response;
+            };
+
+            response.data = [await request.json()];
+            response.message = "Created"
+
+        } catch (e) {
+            console.log(e)
+            response.message = "Error Creating";
+        }
+        return response;
+    }
+
 
     async update(entity:Entity): Promise<RequestReturn> {
         const response = new RequestReturn();

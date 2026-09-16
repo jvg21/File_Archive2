@@ -20,15 +20,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [UserAuth, setUserAuth] = useState<UserAuth | null>(null);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    // const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const setUserAuthenticated = (user: UserAuth)=>{
-        if(!user){
+    const setUserAuthenticated = (user: UserAuth) => {
+        if (!user) {
             setUserAuth(null)
             setIsAuthenticated(false)
             return
         }
         setUserAuth(user)
         setIsAuthenticated(true)
+        // setIsLoading(false)
+
     }
 
     return createElement(
@@ -48,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export const useAuth = () => {
     const context = useContext(AuthContext);
 
-        if (!context) throw new Error('useAuth on AuthProvider');
+    if (!context) throw new Error('useAuth on AuthProvider');
 
     return context
 }

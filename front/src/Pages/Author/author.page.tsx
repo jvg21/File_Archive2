@@ -59,7 +59,7 @@ export const AuthorPage = () => {
             tableData={tableData ?? []}
             onRowClick={SetSelectedEntity}
             keyExtractor={(row) => row.id}
-            initialPageSize={Config.defaultTableDataSize}
+            initialPageSize={tableData && tableData?.length<=Config.defaultTableDataSize?tableData?.length:Config.defaultTableDataSize}
             loading={isLoading}
         />, [tableData])
 
