@@ -54,8 +54,8 @@
   --media-md: 720px;
   --media-lg: 1024px;
   --media-xl: 1280px;
-  --colapsed-sidebar-width: 70px;
-  --sidebar-width: 240px;
+  --colapsed-sidebar-width: 65px;
+  --sidebar-width: 200px;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;

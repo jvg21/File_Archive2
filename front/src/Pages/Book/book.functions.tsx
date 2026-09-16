@@ -3,8 +3,11 @@ import { BookDataStore } from "../../Data/Datastore/book.datastore";
 import { getReadingStatusByName, IsValidReadingStatusName } from "../../Data/Enums/readingStatus.enum";
 import { getWritingStatusByName, IsValidWritingStatusName } from "../../Data/Enums/writingStatus.enum";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
+import type { UrlEntity } from "../../Data/Types/Entity/url.entity";
 import type { RequestReturn } from "../../Data/Types/requestReturn";
 import * as XLSX from 'xlsx';
+import { urlNameGenerator } from "../../Utils/urlNameGenerator";
+import { urlDomainRegex } from "../../Utils/Regex/urlDomain.regex";
 
 type Entity = BookEntity;
 const DataStore = new BookDataStore();
@@ -84,11 +87,16 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
             defval: "",
         });
 
-        console.log(jsonData)
-
         const books: BookEntity[] = []
         jsonData.forEach((bookRow: string[], index) => {
             if (index === 0 || bookRow[0] === "") return;
+
+            const urls: Partial<UrlEntity>[] = []
+
+            for (var i = 11; i <= 13; i++) {
+                var name = urlNameGenerator(bookRow[i]);
+                if (bookRow[i]) urls.push({ content: bookRow[i], name: name.match(urlDomainRegex)?.[1] })
+            }
 
             const book: BookEntity = {
                 id: -1,
@@ -96,32 +104,27 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
                 summary: bookRow[1],
                 notes: bookRow[2],
                 rating: bookRow[3] !== "" ? Number(bookRow[3]) : undefined,
-                currentChapter: bookRow[4] !== "" ? Number(bookRow[4]) : undefined,
+                currentChapter: bookRow[4] !== "" ? Number(bookRow[4]) : 0,
                 totalChapters: bookRow[5] !== "" ? Number(bookRow[5]) : undefined,
                 words: bookRow[6] !== "" ? Number(bookRow[6]) : undefined,
-                readingStatus: IsValidReadingStatusName(bookRow[7]) ? getReadingStatusByName(bookRow[7]) : undefined,
-                writingStatus: IsValidWritingStatusName(bookRow[8]) ? getWritingStatusByName(bookRow[8]) : undefined,
+                readingStatus: IsValidReadingStatusName(bookRow[7]) === true ? getReadingStatusByName(bookRow[7]) : undefined,
+                writingStatus: IsValidWritingStatusName(bookRow[8]) === true ? getWritingStatusByName(bookRow[8]) : undefined,
                 authors: [],
-                urls: []
+                urls: urls
             }
             books.push(book);
+        
         });
+console.log(books)
+        return books;
 
-        console.log(books)
-
-
-        // const request = await DataStore.createArray([]);
-
-        // if (request.status !== 200) {
-        //     showNotification(request.message, 'failure')
-        //     return
-        // }
-        // showNotification(request.message, 'success')
     }
     catch (e) {
         showNotification(e instanceof Error ? e.message : 'Error Importing', 'failure')
     }
 }
+
+
 
 
 export function generateEmptyBook(): Entity {

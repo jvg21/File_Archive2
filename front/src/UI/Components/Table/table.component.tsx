@@ -23,7 +23,8 @@ export type TableProps<T> = {
     emptyMessage?: string,
     keyExtractor?: (row: T) => string | number,
     initialPageSize: number,
-    onRowClick: (row: T) => void
+    onRowClick: (row: T) => void,
+    hideColumns?: (keyof T)[],
     // resetFuncition: () => void,
     actions?: TableActions<T>[],
     pagination?: boolean
@@ -36,6 +37,7 @@ export function Table<T extends Object>({
     actions = [],
     keyExtractor,
     onRowClick,
+    hideColumns,
     emptyMessage = "No Data",
     initialPageSize = 25,
     pagination = true,
@@ -46,12 +48,15 @@ export function Table<T extends Object>({
 
     //***PAGINATION*** */
     const [currentPage, setCurrentPage] = useState<number>(1)
-    const [pageSize, setPageSize] = useState(pagination ? initialPageSize : tableData.length)
+    const [pageSize, setPageSize] = useState(initialPageSize)
+
+    const requirePagination = pagination && tableData && tableData.length > pageSize;
 
     const startIndex = (currentPage - 1) * pageSize
-    const totalPages = Math.ceil(tableData.length / pageSize)
+    const totalPages = requirePagination ? Math.ceil(tableData.length / pageSize) : 1;
 
-    const paginatedData = tableData.slice(startIndex, startIndex + pageSize)
+    const paginatedData = requirePagination ? tableData.slice(startIndex, startIndex + pageSize) : tableData
+
 
     useEffect(() => {
         setCurrentPage(1)
@@ -68,13 +73,13 @@ export function Table<T extends Object>({
             <table className={style.table}>
                 <thead >
                     <tr>
-                        {tableColumn.map((col, index) =>
+                        {tableColumn.filter((col) => !hideColumns?.includes(col.key)).map((col, index) =>
                             <th key={index} className={col.className ? style[col.className] : ''}>{col.header}</th>
                         )}
 
                         {
                             actions && actions.length > 0 &&
-                            <th key={'actions'}>Actions</th>
+                            <th key={'actions'}>Ações</th>
                         }
                     </tr>
 
@@ -83,12 +88,12 @@ export function Table<T extends Object>({
                 <tbody>
                     {
                         paginatedData.map((row, index) =>
-                            <tr onClick={()=>{onRowClick(row)}} key={
+                            <tr onClick={onRowClick ? () => onRowClick(row) : undefined} key={
                                 keyExtractor ? keyExtractor(row) : index
 
                             }>
                                 {
-                                    tableColumn.map((col) =>
+                                    tableColumn.filter((col) => !hideColumns?.includes(col.key)).map((col) =>
 
                                         <td key={String(col.key)} className={col.className ? style[col.className] : ''}>
                                             {
@@ -97,31 +102,34 @@ export function Table<T extends Object>({
                                                     :
                                                     String(row[col.key] ?? '-')
                                             }
-
                                         </td>
                                     )
                                 }
+                                {
+                                    actions.length > 0 && <td key="actionFunctions" className={style.actionsCell}>
+                                        <div className={style.actionsContainer}>
+                                            {actions.map((action) => {
+                                                const Icon = action.icon
 
-                                <td key="actionFunctions" className={style.actionsCell}>
-                                    <div className={style.actionsContainer}>
-                                        {actions.map((action) => {
-                                            const Icon = action.icon
-
-                                            return (
-                                                <button
-                                                    key={action.key}
-                                                    className={style.actionButton}
-                                                    onClick={() => action.action(row)}
-                                                    title={action.header}
-                                                >
-                                                    {Icon ? <Icon /> : action.header}
-                                                </button>
-                                            )
-                                        })}
-                                    </div>
-                                </td>
-
-
+                                                return (
+                                                    <button
+                                                        key={action.key}
+                                                        className={style.actionButton}
+                                                        type="button"
+                                                        onClick={(event) => {
+                                                            event.stopPropagation()
+                                                            action.action(row)
+                                                        }}
+                                                        title={action.header}
+                                                        aria-label={action.header}
+                                                    >
+                                                        {Icon ? <Icon /> : action.header}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    </td>
+                                }
 
                             </tr>
                         )
@@ -131,7 +139,7 @@ export function Table<T extends Object>({
             </table>
 
             { /***PAGINATION**** */}
-            {pagination && <TablePagination
+            {requirePagination && <TablePagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 totalPages={totalPages}

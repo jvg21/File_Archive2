@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { UrlEntity } from "../../../Data/Types/Entity/url.entity";
 import type { ModalFlow } from "../../../Data/Types/modalFlow";
 import style from '../../Styles/modal.module.css'
-import { urlNameGenerator } from "../../../utils/urlNameGenerator";
+import { urlNameGenerator } from "../../../Utils/urlNameGenerator";
 import { useNotification } from "../../../Data/Context/notification.context";
 
 

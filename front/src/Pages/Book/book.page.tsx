@@ -25,12 +25,14 @@ export const BookPage = () => {
     const [tableData, setTableData] = useState<Entity[] | null>(null);
     const [selectedEntity, SetSelectedEntity] = useState<Entity>(generateEmpty())
 
-    // const [importSheet, setImportSheet] = useState<FileList>();
+    const [importData, setImportData] = useState<Entity[] | undefined>();
 
     /**PageStates */
     const [isLoading, setLoading] = useState<boolean>(true);
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
+    const [importModal, setImportModal] = useState<boolean>(false);
+
 
     // console.log(importSheet)
     useEffect(() => {
@@ -38,6 +40,12 @@ export const BookPage = () => {
         setLoading(false);
 
     }, [])
+
+    async function handleImportData(file: File) {
+        const importData = await importInsertBookSheet(file, showNotification);
+        setImportData(importData);
+        setImportModal(true);
+    }
 
     async function handleSubmit() {
         if (modalPage === 'create') await createBook(selectedEntity, showNotification)
@@ -65,12 +73,27 @@ export const BookPage = () => {
             loading={isLoading}
         />, [tableData])
 
+    const ImportTableMemo = useMemo(() =>
+        <Table
+            tableColumn={TableColumns}
+            tableData={importData ?? []}
+            hideColumns={['id']}
+            initialPageSize={importData?.length || 0}
+            onRowClick={() => { }}
+        />, [importData])
+
     return (
         <div className={pageStyle.main}>
 
             <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add +</button>
 
-            <input type="file" multiple={false} id="input" onChange={(e) => e.target.files ? importInsertBookSheet(e.target.files[0],showNotification) : undefined} />
+            <input type="file" multiple={false} id="input" onChange={(e) => {
+                e.target.files ?
+                    (
+                        handleImportData(e.target.files[0])
+                    )
+                    : undefined
+            }} />
 
             {/* /***LOAD THE TABLE COMPONENT* */}
             {TableMemo}
@@ -87,6 +110,17 @@ export const BookPage = () => {
                         flow={modalPage}
                         onSubmit={handleSubmit}
                     />
+                </ModalFrame>
+            }
+
+            {
+                importModal &&
+                <ModalFrame
+                    closeModal={setImportModal}
+                    styleProps="lg"
+                >
+                    {ImportTableMemo}
+
                 </ModalFrame>
             }
 

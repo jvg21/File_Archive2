@@ -17,24 +17,19 @@ export function getReadingStatusEnum(id: ReadingStatusId) {
     return ReadingStatusEnum[id]
 }
 
-export function getReadingStatusByName(name: string): ReadingStatusId | undefined {
-    getAllReadingStatus().forEach((status) => {
-        if (status.name === name) return status.id;
-    })
+export function getReadingStatusByName(name: string) {
+    const readingStatus = getAllReadingStatus().find((status) => status.name.toLowerCase()===name.toLowerCase())
+    return readingStatus ? readingStatus.id : undefined
 
-    return undefined;
 }
 
 export function IsValidReadingStatus(id: ReadingStatusId) {
     return id in ReadingStatusEnum
 }
 
-export function IsValidReadingStatusName(name: string) {
-    getAllReadingStatus().forEach((status) => {
-        if (status.name === name) return true;
-    })
-
-    return false
+export function IsValidReadingStatusName(name: string): boolean {
+    const isValidReadingStatus = getAllReadingStatus().some((status) => status.name.toLowerCase()===name.toLowerCase())
+    return isValidReadingStatus
 }
 
 export function getAllReadingStatus(): { id: number, name: string }[] {

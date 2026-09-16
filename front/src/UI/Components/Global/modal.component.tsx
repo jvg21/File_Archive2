@@ -4,10 +4,11 @@ import style from '../../Styles/modal.module.css'
 
 interface ModalFrame {
     children: ReactNode,
+    styleProps?: string
     closeModal: (modal: boolean) => void
 }
 
-export const ModalFrame = ({ children, closeModal }: ModalFrame) => {
+export const ModalFrame = ({ children, closeModal, styleProps }: ModalFrame) => {
     const [clickTimeout, SetClickTimeout] = useState<ReturnType<typeof setTimeout> | null>(null)
 
     const handleCloseClick = () => {
@@ -18,15 +19,14 @@ export const ModalFrame = ({ children, closeModal }: ModalFrame) => {
             closeModal(false)
         }
 
-
         SetClickTimeout(setTimeout(() => {
             SetClickTimeout(null)
         }, 1000))
 
     }
     return (
-        <div className={style.modalBackground} onClick={handleCloseClick}>
-            <div className={style.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={`${style.modalBackground}`} onClick={handleCloseClick}>
+            <div className={`${style.modal} ${styleProps ? style[styleProps] : ''}`} onClick={(e) => e.stopPropagation()}>
                 <header className={style.header}>
 
                     <button onClick={() => closeModal(false)}> X </button>

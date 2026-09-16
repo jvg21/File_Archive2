@@ -28,12 +28,13 @@ export const BookColumns: TableColumns<BookEntity>[] = [
 
         }
     },
-    { key: "summary", header: "summary",
-        render:(value) =>{
+    {
+        key: "summary", header: "summary",
+        render: (value) => {
             const summary = value as BookEntity["summary"];
-            return summary.slice(0,20)
+            return summary.slice(0, 20)
         }
-     },
+    },
     {
         key: "currentChapter", header: "Chapters",
         render: (value, row) => {
@@ -45,13 +46,13 @@ export const BookColumns: TableColumns<BookEntity>[] = [
     {
         key: "readingStatus", header: "Reading Status",
         render: (value) => {
-            return `${getReadingStatusEnum(value as ReadingStatusId).name}`
+            return `${value ? getReadingStatusEnum(value as ReadingStatusId).name : ""}`
         }
     },
     {
         key: "writingStatus", header: "Writing Status",
         render: (value) => {
-            return `${getWritingStatusEnum(value as WritingStatusId).name}`
+            return `${value ? getWritingStatusEnum(value as WritingStatusId).name : ""}`
         }
     },
 

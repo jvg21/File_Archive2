@@ -11,12 +11,9 @@ export const WritingStatusEnum: Record<WritingStatusId, { name: string }> = {
 export function getWritingStatusEnum(id: WritingStatusId) {
     return WritingStatusEnum[id]
 }
-export function getWritingStatusByName(name: string): WritingStatusId | undefined {
-    getAllWritingStatus().forEach((status) => {
-        if (status.name === name) return status.id;
-    })
-
-    return undefined;
+export function getWritingStatusByName(name: string) {
+    const writingStatus = getAllWritingStatus().find((status) => status.name.toLowerCase() === name.toLowerCase())
+    return writingStatus ? writingStatus.id : undefined;
 }
 
 export function IsValidWritingStatus(id: WritingStatusId) {
@@ -24,11 +21,8 @@ export function IsValidWritingStatus(id: WritingStatusId) {
 }
 
 export function IsValidWritingStatusName(name: string) {
-    getAllWritingStatus().forEach((status) => {
-        if (status.name === name) return true;
-    })
-
-    return false
+    const isValidWritingStatus = getAllWritingStatus().some((status) => status.name.toLowerCase() === name.toLowerCase())
+    return isValidWritingStatus;
 }
 
 export function getAllWritingStatus(): { id: number, name: string }[] {
