@@ -8,12 +8,27 @@ import type { RequestReturn } from "../../Data/Types/requestReturn";
 import * as XLSX from 'xlsx';
 import { urlNameGenerator } from "../../Utils/urlNameGenerator";
 import { urlDomainRegex } from "../../Utils/Regex/urlDomain.regex";
+import type { EntitiesResult } from "../../Data/Types/entitiesResult";
+import type { SetStateAction } from "react";
 
 type Entity = BookEntity;
 const DataStore = new BookDataStore();
 
+interface BookFunctionsProps {
+
+    entities?: Entity[]
+    setEntities?: (books: Entity[]) => void
+    showNotification: ShowNotificationType
+    setEntityResults?: React.Dispatch<SetStateAction<EntitiesResult<BookEntity> | undefined>>
+
+}
+
+
 /**GET FUNCIOTIONS */
-export async function getBookData(setTableData: React.Dispatch<React.SetStateAction<Entity[] | null>>, showNotification: ShowNotificationType): Promise<void> {
+export async function getBookData(props: BookFunctionsProps): Promise<void> {
+    const { showNotification, setEntities } = props;
+
+    if (!setEntities) throw new Error;
 
     const request: RequestReturn = await DataStore.getAll();
 
@@ -21,12 +36,16 @@ export async function getBookData(setTableData: React.Dispatch<React.SetStateAct
         showNotification(request.message, 'failure')
         return
     }
-    setTableData(request.data as Entity[])
+    setEntities(request.data as Entity[])
 };
 
 
 /******SUBMIT FUNCIOTIONS ***********/
-export async function createBook(entity: Entity, showNotification: ShowNotificationType): Promise<void> {
+export async function createBook(props: BookFunctionsProps): Promise<void> {
+    const { showNotification, entities } = props
+    if (!entities) throw new Error;
+
+    const entity = entities[0];
     if (!entity || !entity.title) return;
 
     const request = await DataStore.create(entity);
@@ -39,8 +58,28 @@ export async function createBook(entity: Entity, showNotification: ShowNotificat
 }
 
 
-export async function updateBook(entity: Entity, showNotification: ShowNotificationType): Promise<void> {
+export async function createBookArray(props: BookFunctionsProps) {
+    const { showNotification, entities, setEntityResults } = props
+    if (!entities || entities.length < 0) return;
 
+    const request = await DataStore.createArray(entities);
+
+    if (request.status !== 200) {
+        showNotification(request.message, 'failure')
+        return
+    }
+    console.log(request.data[0])
+    setEntityResults ? setEntityResults(request.data[0] as EntitiesResult<Entity>) : '';
+    showNotification(request.message, 'success')
+}
+
+
+
+export async function updateBook(props: BookFunctionsProps): Promise<void> {
+    const { showNotification, entities } = props
+    if (!entities) throw new Error;
+
+    const entity = entities[0];
     if (!entity || !entity.id) return;
 
     const payload = {
@@ -59,8 +98,8 @@ export async function updateBook(entity: Entity, showNotification: ShowNotificat
     showNotification(request.message, 'success')
 }
 
-export async function deleteBook(id: number, showNotification: ShowNotificationType): Promise<void> {
-
+export async function deleteBook(id: number, props: BookFunctionsProps): Promise<void> {
+    const { showNotification } = props;
     if (!id) return;
 
     const request = await DataStore.delete(id);
@@ -73,8 +112,10 @@ export async function deleteBook(id: number, showNotification: ShowNotificationT
 }
 
 
-export async function importInsertBookSheet(file: File, showNotification: ShowNotificationType) {
+export async function importInsertBookSheet(file: File, props: BookFunctionsProps) {
     // console.log(file.)
+    const { showNotification } = props;
+
     if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx", 'failure');
 
     try {
@@ -99,7 +140,7 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
             }
 
             const book: BookEntity = {
-                id: -1,
+                id: index * -1,
                 title: bookRow[0],
                 summary: bookRow[1],
                 notes: bookRow[2],
@@ -113,9 +154,9 @@ export async function importInsertBookSheet(file: File, showNotification: ShowNo
                 urls: urls
             }
             books.push(book);
-        
+
         });
-console.log(books)
+        console.log(books)
         return books;
 
     }
@@ -123,8 +164,6 @@ console.log(books)
         showNotification(e instanceof Error ? e.message : 'Error Importing', 'failure')
     }
 }
-
-
 
 
 export function generateEmptyBook(): Entity {

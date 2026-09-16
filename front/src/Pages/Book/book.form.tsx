@@ -1,6 +1,6 @@
 import type { ModalFlow } from "../../Data/Types/modalFlow"
 import style from '../../UI/Styles/modal.module.css'
-import { UrlForms } from "../../UI/Components/Forms/url.forms";
+import { UrlForms } from "../Url/url.form";
 import type { BookEntity } from "../../Data/Types/Entity/book.entity";
 import { getAllWritingStatus } from "../../Data/Enums/writingStatus.enum";
 import { getAllReadingStatus } from "../../Data/Enums/readingStatus.enum";
@@ -28,7 +28,7 @@ export const BookForm = (props: BookFormProps) => {
 
     const canEdit = flow !== 'delete';
 
-    console.log(entity)
+    // console.log(entity)
 
     function HandleAddAuthor() {
         if (!authorField || !authorField.id) {
@@ -71,7 +71,6 @@ export const BookForm = (props: BookFormProps) => {
 
         return;
     }
-
 
     useEffect(() => {
         getAuthorMiniData(SetAuthors, showNotification)
@@ -221,7 +220,5 @@ export const BookForm = (props: BookFormProps) => {
             </form >
         </>
     )
-
-
 
 }

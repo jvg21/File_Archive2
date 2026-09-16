@@ -1,7 +1,7 @@
 import type { ModalFlow } from "../../Data/Types/modalFlow"
 import style from '../../UI/Styles/modal.module.css'
 import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
-import { UrlForms } from "../../UI/Components/Forms/url.forms";
+import { UrlForms } from "../Url/url.form";
 
 
 interface AuthorFormProps {

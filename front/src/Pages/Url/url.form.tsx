@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { UrlEntity } from "../../../Data/Types/Entity/url.entity";
-import type { ModalFlow } from "../../../Data/Types/modalFlow";
-import style from '../../Styles/modal.module.css'
-import { urlNameGenerator } from "../../../Utils/urlNameGenerator";
-import { useNotification } from "../../../Data/Context/notification.context";
+import type { UrlEntity } from "../../Data/Types/Entity/url.entity";
+import type { ModalFlow } from "../../Data/Types/modalFlow";
+import { urlNameGenerator } from "../../Utils/urlNameGenerator";
+import { useNotification } from "../../Data/Context/notification.context";
+import style from '../../UI/Styles/modal.module.css'
 
 
 interface UrlFormProps<T extends { urls?: Partial<UrlEntity>[], removeUrls?: number[] }> {

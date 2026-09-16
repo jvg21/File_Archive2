@@ -79,7 +79,7 @@ export function Table<T extends Object>({
 
                         {
                             actions && actions.length > 0 &&
-                            <th key={'actions'}>Ações</th>
+                            <th key={'actions'}>Actions</th>
                         }
                     </tr>
 
