@@ -50,6 +50,14 @@ namespace API.Layers.BookLayers
             return Ok(response);
         }
 
+        [HttpPost("sheet")]
+        public async Task<IActionResult> InsertSheet(IFormFile file)
+        {
+            var response = await _bookService.InsertSheet(file);
+            return Ok(response);
+            
+        }
+
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO book)
         {

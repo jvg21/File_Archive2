@@ -9,6 +9,9 @@ using API.Types.Interfaces.IAuthor;
 using API.Types.Interfaces.IBook;
 using API.Types.Interfaces.IUrl;
 using API.Types.Models;
+using API.Utils;
+using API.Utils.FileManipulation;
+using ClosedXML.Excel;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Nodes;
@@ -78,14 +81,76 @@ namespace API.Layers.BookLayers
                     var request = await Insert(book);
                     success.Add(request);
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     failed.Add(new BookInsertArrayErrorDTO { Entry = book, ErrorMessage = exception.Message });
                 }
             }
 
 
-            return new BookInsertArrayResultDTO { Success = success, Failed =  failed };
+            return new BookInsertArrayResultDTO { Success = success, Failed = failed };
+        }
+
+        public async Task<BookInsertArrayResultDTO> InsertSheet(IFormFile file)
+        {
+            var filename = file.FileName;
+
+            if (!filename.Contains(".xlsx")) throw new InvalidFormException("File must be in xlsx format");
+
+            var sheetArrayData = XlsxFunctions.IFileToArray(file);
+            var bookData = new List<BookInsertDTO>();
+
+            foreach (var row in sheetArrayData)
+            {
+                var book = new BookInsertDTO
+                {
+                    Title = row[0] == "" ? null : row[0],
+                    Summary = foreach (var book in books)
+{
+    try
+    {
+        var request = await Insert(book);
+        success.Add(request);
+    }
+    catch (Exception exception)
+    {
+        failed.Add(new BookInsertArrayErrorDTO
+        {
+            Entry = book,
+            ErrorMessage = exception.Message ?? exception.ToString() ?? "Unknown error"
+        });
+    }
+}
+foreach (var row in sheetArrayData)
+{
+    var book = new BookInsertDTO
+    {
+        Title = string.IsNullOrWhiteSpace(row[0]) ? string.Empty : row[0],
+        Summary = string.IsNullOrWhiteSpace(row[1]) ? string.Empty : row[1],
+        Notes = row[2] == "" ? null : row[2],
+        Rating = row[3] == "" ? null : Convert.ToDouble(row[3]),
+        CurrentChapter = row[4] == "" ? null : Convert.ToInt32(row[4]),
+        TotalChapters = row[5] == "" ? null : Convert.ToInt32(row[5]),
+        Words = row[6] == "" ? null : Convert.ToInt32(row[6]),
+        //ReadingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
+        //WritingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
+    };
+    bookData.Add(book);
+},
+                    Notes = row[2] == "" ? null : row[2],
+                    Rating = row[3] == "" ? null : Convert.ToDouble(row[3]),
+                    CurrentChapter = row[4] == "" ? null : Convert.ToInt32(row[4]),
+                    TotalChapters = row[5] == "" ? null : Convert.ToInt32(row[5]),
+                    Words = row[6] == "" ? null : Convert.ToInt32(row[6]),
+                    //ReadingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
+                    //WritingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
+                };
+                bookData.Add(book);
+            }
+
+            var request = await InsertArray(bookData);
+
+            return request;
         }
 
         public async Task<BookGetDTO> Update(int id, BookUpdateDTO dto)
@@ -99,7 +164,7 @@ namespace API.Layers.BookLayers
 
             if (dto.removeAuthors != null)
             {
-                foreach(var authorId in dto.removeAuthors)
+                foreach (var authorId in dto.removeAuthors)
                 {
                     var bookAuthorKey = await _bookAuthorService.Exists(new BookAuthorSearchDTO { Author_Id = authorId, Book_Id = book.Id });
 

@@ -19,9 +19,8 @@
     margin-left: var(--colapsed-sidebar-width);
 }
 
-/* No mobile a sidebar passa a ser um overlay (ver sidebar.module.css),
-   então o conteúdo não precisa mais reservar espaço lateral. */
-@media (max-width: var(--media-md)) {
+@media (max-width: 768px) {
+
     .outlet,
     .outletCollapsed {
         margin-left: 0;

@@ -21,9 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
-    <Folder Include="Data\Exceptions\" />
     <Folder Include="Data\Enums\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
 
 </Project>

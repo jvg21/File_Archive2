@@ -13,6 +13,7 @@ namespace API.Types.Interfaces.IBook
         Task<BookGetDTO> GetById(int id);
         Task<BookGetDTO> Insert(BookInsertDTO dto);
         Task<BookInsertArrayResultDTO> InsertArray(List<BookInsertDTO> books);
+        Task<BookInsertArrayResultDTO> InsertSheet(IFormFile file);
         Task<BookGetDTO> Update(int id, BookUpdateDTO dto);
         Task<BookGetDTO> ChangeActiveStatus(int id, bool status);
         Task<BookGetDTO> Delete(int id);
