@@ -7,7 +7,7 @@ namespace API.Types.DTOs.BookDTOs
     public class BookInsertDTO
     {
         public string Title { get; set; } = string.Empty;
-        public string Summary { get; set; } = string.Empty;
+        public string? Summary { get; set; } = string.Empty;
         public string? Notes { get; set; } = string.Empty;
         public double? Rating { get; set; }
         public int? TotalChapters { get; set; }

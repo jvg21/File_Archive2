@@ -105,38 +105,7 @@ namespace API.Layers.BookLayers
                 var book = new BookInsertDTO
                 {
                     Title = row[0] == "" ? null : row[0],
-                    Summary = foreach (var book in books)
-{
-    try
-    {
-        var request = await Insert(book);
-        success.Add(request);
-    }
-    catch (Exception exception)
-    {
-        failed.Add(new BookInsertArrayErrorDTO
-        {
-            Entry = book,
-            ErrorMessage = exception.Message ?? exception.ToString() ?? "Unknown error"
-        });
-    }
-}
-foreach (var row in sheetArrayData)
-{
-    var book = new BookInsertDTO
-    {
-        Title = string.IsNullOrWhiteSpace(row[0]) ? string.Empty : row[0],
-        Summary = string.IsNullOrWhiteSpace(row[1]) ? string.Empty : row[1],
-        Notes = row[2] == "" ? null : row[2],
-        Rating = row[3] == "" ? null : Convert.ToDouble(row[3]),
-        CurrentChapter = row[4] == "" ? null : Convert.ToInt32(row[4]),
-        TotalChapters = row[5] == "" ? null : Convert.ToInt32(row[5]),
-        Words = row[6] == "" ? null : Convert.ToInt32(row[6]),
-        //ReadingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
-        //WritingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
-    };
-    bookData.Add(book);
-},
+                    Summary = row[1] == "" ? null : row[1],
                     Notes = row[2] == "" ? null : row[2],
                     Rating = row[3] == "" ? null : Convert.ToDouble(row[3]),
                     CurrentChapter = row[4] == "" ? null : Convert.ToInt32(row[4]),
