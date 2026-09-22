@@ -40,10 +40,9 @@ export async function getBookData({ showNotification, setEntities }: BookFunctio
 
 
 /******SUBMIT FUNCIOTIONS ***********/
-export async function createBook({ showNotification, entities }: BookFunctionsProps): Promise<void> {
-    if (!entities) throw new Error;
+export async function createBook({ showNotification, entity }: BookFunctionsProps): Promise<void> {
+    if (!entity) throw new Error;
 
-    const entity = entities[0];
     if (!entity || !entity.title) return;
 
     const request = await DataStore.create(entity);
@@ -72,17 +71,14 @@ export async function createBookArray({ showNotification, entities, setEntityRes
 
 
 
-export async function updateBook({ showNotification, entities }: BookFunctionsProps): Promise<void> {
-    if (!entities) throw new Error;
+export async function updateBook({ showNotification, entity }: BookFunctionsProps): Promise<void> {
+    if (!entity) throw new Error;
 
-    const entity = entities[0];
     if (!entity || !entity.id) return;
 
     const payload = {
         ...entity,
         urls: entity.urls?.filter((url) => !url.id),
-
-
     };
 
     const request = await DataStore.update(payload);
@@ -94,10 +90,10 @@ export async function updateBook({ showNotification, entities }: BookFunctionsPr
     showNotification(request.message, 'success')
 }
 
-export async function deleteBook(id: number, { showNotification }: BookFunctionsProps): Promise<void> {
-    if (!id) return;
+export async function deleteBook({ entity, showNotification }: BookFunctionsProps): Promise<void> {
+    if (!entity||!entity.id) return;
 
-    const request = await DataStore.delete(id);
+    const request = await DataStore.delete(entity.id);
 
     if (request.status !== 200) {
         showNotification(request.message, 'failure')

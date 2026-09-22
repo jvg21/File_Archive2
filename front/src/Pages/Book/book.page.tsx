@@ -44,9 +44,9 @@ export const BookPage = () => {
 
 
     async function handleSubmit() {
-        if (modalPage === 'create') await createBook({ entities: [selectedEntity], showNotification })
-        if (modalPage === 'edit') await updateBook({ entities: [selectedEntity], showNotification })
-        if (modalPage === 'delete') await deleteBook(selectedEntity.id, { showNotification })
+        if (modalPage === 'create') await createBook({ entity: selectedEntity, showNotification })
+        if (modalPage === 'edit') await updateBook({ entity: selectedEntity, showNotification })
+        if (modalPage === 'delete') await deleteBook( {entity:selectedEntity, showNotification })
 
         getBookData({ setEntities: setTableData, showNotification });
         setFormModal(false);
@@ -94,7 +94,6 @@ export const BookPage = () => {
                     />
                 </ModalFrame>
             }
-
             {
                 importModal &&
                 <ModalFrame
@@ -103,7 +102,6 @@ export const BookPage = () => {
                 >
                     <ImportModal
                         showNotification={showNotification}
-
                     />
 
                 </ModalFrame>
