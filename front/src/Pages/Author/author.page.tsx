@@ -6,7 +6,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ModalFrame } from "../../UI/Components/Global/modal.component";
 import type { ModalFlow } from "../../Data/Types/modalFlow";
 import { AuthorColumns } from "./author.columns";
-import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
+import type { AuthorEntity } from "./author.entity";
 import { createAuthor, deleteAuthor, generateEmptyAuthor, getAuthorData, updateAuthor } from "./author.functions";
 import { AuthorForm } from "./author.form";
 import { useNotification } from "../../Data/Context/notification.context";
@@ -32,17 +32,17 @@ export const AuthorPage = () => {
 
 
     useEffect(() => {
-        getAuthorData(setTableData, showNotification);
+        getAuthorData({ setEntities: setTableData, showNotification });
         setLoading(false);
 
     }, [])
 
     async function handleSubmit() {
-        if (modalPage === 'create') await createAuthor(selectedEntity, showNotification)
-        if (modalPage === 'edit') await updateAuthor(selectedEntity, showNotification)
-        if (modalPage === 'delete') await deleteAuthor(selectedEntity.id, showNotification)
+        if (modalPage === 'create') await createAuthor({ entity: selectedEntity, showNotification })
+        if (modalPage === 'edit') await updateAuthor({ entity: selectedEntity, showNotification })
+        if (modalPage === 'delete') await deleteAuthor({ entity: selectedEntity, showNotification })
 
-        getAuthorData(setTableData, showNotification);
+        getAuthorData({ setEntities: setTableData, showNotification });
         setFormModal(false);
         SetSelectedEntity(generateEmpty());
     }
@@ -59,7 +59,7 @@ export const AuthorPage = () => {
             tableData={tableData ?? []}
             onRowClick={SetSelectedEntity}
             keyExtractor={(row) => row.id}
-            initialPageSize={tableData && tableData?.length<=Config.defaultTableDataSize?tableData?.length:Config.defaultTableDataSize}
+            initialPageSize={tableData && tableData?.length <= Config.defaultTableDataSize ? tableData?.length : Config.defaultTableDataSize}
             loading={isLoading}
         />, [tableData])
 

@@ -1,5 +1,5 @@
-import type { AuthorEntity } from "./author.entity";
-import type { BookEntity } from "./book.entity";
+import type { AuthorEntity } from "../Author/author.entity";
+import type { BookEntity } from "../Book/book.entity";
 
 
 export interface FileArchive  {

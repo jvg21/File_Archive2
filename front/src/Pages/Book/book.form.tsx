@@ -1,11 +1,11 @@
 import type { ModalFlow } from "../../Data/Types/modalFlow"
 import style from '../../UI/Styles/modal.module.css'
 import { UrlForms } from "../Url/url.form";
-import type { BookEntity } from "../../Data/Types/Entity/book.entity";
+import type { BookEntity } from "./book.entity";
 import { getAllWritingStatus } from "../../Data/Enums/writingStatus.enum";
 import { getAllReadingStatus } from "../../Data/Enums/readingStatus.enum";
 import { useEffect, useState } from "react";
-import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
+import type { AuthorEntity } from "../Author/author.entity";
 import { getAuthorMiniData } from "../Author/author.functions";
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
 
@@ -14,14 +14,13 @@ interface BookFormProps {
 
     flow: ModalFlow,
     entity: BookEntity,
-    showNotification: ShowNotificationType,
     setEntity: React.Dispatch<React.SetStateAction<BookEntity>>,
+    showNotification: ShowNotificationType,
     onSubmit: () => void,
 }
 
-export const BookForm = (props: BookFormProps) => {
+export const BookForm = ({ flow, onSubmit, entity, setEntity, showNotification }: BookFormProps) => {
 
-    const { flow, onSubmit, entity, setEntity, showNotification } = props;
 
     const [authors, SetAuthors] = useState<AuthorEntity[] | null>(null);
     const [authorField, setAuthorField] = useState<AuthorEntity | null>(null);
@@ -43,11 +42,12 @@ export const BookForm = (props: BookFormProps) => {
 
         authorField.isActive === false;
         authorsArray.push(authorField);
-        
-         setEntity((prev) => (
-            { ...prev, 
+
+        setEntity((prev) => (
+            {
+                ...prev,
                 authors: authorsArray,
-                removeAuthors: prev.removeAuthors?.filter((authorId)=> authorId !== authorField.id)
+                removeAuthors: prev.removeAuthors?.filter((authorId) => authorId !== authorField.id)
             }
         ))
 
@@ -58,12 +58,13 @@ export const BookForm = (props: BookFormProps) => {
 
     function HandleRemoveAuthor(removeAuthor: Partial<AuthorEntity>) {
         if (!removeAuthor.id) return;
-        
+
         const removeAuthorArray = entity.removeAuthors || [];
         removeAuthorArray.push(removeAuthor.id);
 
         setEntity((prev) => (
-            { ...prev, 
+            {
+                ...prev,
                 authors: prev.authors?.filter((author) => removeAuthor.id !== author.id),
                 removeAuthors: removeAuthorArray
             }
@@ -73,7 +74,7 @@ export const BookForm = (props: BookFormProps) => {
     }
 
     useEffect(() => {
-        getAuthorMiniData(SetAuthors, showNotification)
+        getAuthorMiniData({ setEntities: SetAuthors, showNotification })
     }, [])
 
     return (

@@ -1,6 +1,6 @@
 import { type ShowNotificationType } from "../../Data/Context/notification.context";
 import { AuthorDataStore } from "../../Data/Datastore/author.datastore";
-import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
+import type { AuthorEntity } from "./author.entity";
 import type { RequestReturn } from "../../Data/Types/requestReturn";
 
 
@@ -8,33 +8,44 @@ import type { RequestReturn } from "../../Data/Types/requestReturn";
 type Entity = AuthorEntity;
 const DataStore = new AuthorDataStore();
 
-/**GET FUNCIOTIONS */
-export async function getAuthorData(setTableData: React.Dispatch<React.SetStateAction<Entity[] | null>>, showNotification: ShowNotificationType): Promise<void> {
+interface AuthorFunctionsProps {
 
+    entity?: Entity,
+    entities?: Entity[]
+    setEntities?: (author: Entity[]) => void
+    showNotification: ShowNotificationType
+
+}
+
+/**GET FUNCIOTIONS */
+export async function getAuthorData({ showNotification, setEntities }: AuthorFunctionsProps): Promise<void> {
+
+    if (!showNotification || !setEntities) throw new Error();
     const request: RequestReturn = await DataStore.getAll();
 
     if (request.status !== 200) {
         showNotification(request.message, 'failure')
         return
     }
-    setTableData(request.data as Entity[])
+    setEntities(request.data as Entity[])
 };
 
-export async function getAuthorMiniData(setTableData: React.Dispatch<React.SetStateAction<Entity[] | null>>, showNotification: ShowNotificationType): Promise<void> {
+export async function getAuthorMiniData({ showNotification, setEntities }: AuthorFunctionsProps): Promise<void> {
 
+    if (!showNotification || !setEntities) throw new Error();
     const request: RequestReturn = await DataStore.getAllMini();
 
     if (request.status !== 200) {
         showNotification(request.message, 'failure')
         return
     }
-    setTableData(request.data as Entity[])
+    setEntities(request.data as Entity[])
 };
 
 
 /******SUBMIT FUNCIOTIONS ***********/
-export async function createAuthor(entity: Entity, showNotification: ShowNotificationType): Promise<void> {
-    if (!entity || !entity.name) return;
+export async function createAuthor({ entity, showNotification }: AuthorFunctionsProps): Promise<void> {
+    if (!entity || !entity.name || !showNotification) return;
 
     const request = await DataStore.create(entity);
 
@@ -46,9 +57,9 @@ export async function createAuthor(entity: Entity, showNotification: ShowNotific
 }
 
 
-export async function updateAuthor(entity: Entity, showNotification: ShowNotificationType): Promise<void> {
+export async function updateAuthor({ entity, showNotification }: AuthorFunctionsProps): Promise<void> {
 
-    if (!entity || !entity.id) return;
+    if (!entity || !entity.id || !showNotification) return;
 
     const payload = {
         ...entity,
@@ -64,11 +75,11 @@ export async function updateAuthor(entity: Entity, showNotification: ShowNotific
     showNotification(request.message, 'success')
 }
 
-export async function deleteAuthor(id: number, showNotification: ShowNotificationType): Promise<void> {
+export async function deleteAuthor({ entity, showNotification }: AuthorFunctionsProps): Promise<void> {
 
-    if (!id) return;
+    if (!entity || !entity.id || !showNotification) return;
 
-    const request = await DataStore.delete(id);
+    const request = await DataStore.delete(entity.id);
 
     if (request.status !== 200) {
         showNotification(request.message, 'failure')

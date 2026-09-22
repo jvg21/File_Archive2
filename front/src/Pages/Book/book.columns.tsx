@@ -3,7 +3,7 @@ import style from '../../UI/Styles/table.module.css'
 
 import type { TableColumns } from '../../UI/Components/Table/table.component';
 
-import type { BookEntity } from '../../Data/Types/Entity/book.entity';
+import type { BookEntity } from './book.entity';
 import { getReadingStatusEnum, type ReadingStatusId } from '../../Data/Enums/readingStatus.enum';
 import { getWritingStatusEnum, type WritingStatusId } from '../../Data/Enums/writingStatus.enum';
 import { Link } from 'react-router-dom';

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { UrlEntity } from "../../Data/Types/Entity/url.entity";
+import type { UrlEntity } from "./url.entity";
 import type { ModalFlow } from "../../Data/Types/modalFlow";
 import { urlNameGenerator } from "../../Utils/urlNameGenerator";
 import { useNotification } from "../../Data/Context/notification.context";
@@ -13,9 +13,8 @@ interface UrlFormProps<T extends { urls?: Partial<UrlEntity>[], removeUrls?: num
 }
 
 
-export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removeUrls?: number[] },>(props: UrlFormProps<T>) => {
-
-    const { entity, setEntity, flow } = props;
+export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removeUrls?: number[] },>
+    ({ entity, setEntity, flow }: UrlFormProps<T>) => {
 
     const { showNotification } = useNotification();
 

@@ -1,6 +1,6 @@
 import type { ModalFlow } from "../../Data/Types/modalFlow"
 import style from '../../UI/Styles/modal.module.css'
-import type { AuthorEntity } from "../../Data/Types/Entity/author.entity";
+import type { AuthorEntity } from "./author.entity";
 import { UrlForms } from "../Url/url.form";
 
 
@@ -12,11 +12,9 @@ interface AuthorFormProps {
     onSubmit: () => void,
 }
 
-export const AuthorForm = (props: AuthorFormProps) => {
+export const AuthorForm = ({ flow, onSubmit, entity, setEntity } : AuthorFormProps) => {
 
-    const { flow, onSubmit, entity, setEntity } = props;
     const canEdit = flow !== 'delete';
-
     return (
         <>
             <h3>
@@ -45,10 +43,7 @@ export const AuthorForm = (props: AuthorFormProps) => {
                         setEntity={setEntity}
                         flow={flow}
                     />
-
                 }
-
-
                 <button type="button" className={style.fieldButton} onClick={() => onSubmit()}>Submit</button>
 
             </form >

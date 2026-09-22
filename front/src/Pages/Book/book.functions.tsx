@@ -2,8 +2,8 @@ import type { ShowNotificationType } from "../../Data/Context/notification.conte
 import { BookDataStore } from "../../Data/Datastore/book.datastore";
 import { getReadingStatusByName, IsValidReadingStatusName } from "../../Data/Enums/readingStatus.enum";
 import { getWritingStatusByName, IsValidWritingStatusName } from "../../Data/Enums/writingStatus.enum";
-import type { BookEntity } from "../../Data/Types/Entity/book.entity";
-import type { UrlEntity } from "../../Data/Types/Entity/url.entity";
+import type { BookEntity } from "./book.entity";
+import type { UrlEntity } from "../Url/url.entity";
 import type { RequestReturn } from "../../Data/Types/requestReturn";
 import * as XLSX from 'xlsx';
 import { urlNameGenerator } from "../../Utils/urlNameGenerator";
@@ -15,7 +15,7 @@ type Entity = BookEntity;
 const DataStore = new BookDataStore();
 
 interface BookFunctionsProps {
-
+    entity?: Entity,
     entities?: Entity[]
     setEntities?: (books: Entity[]) => void
     showNotification: ShowNotificationType
@@ -25,8 +25,7 @@ interface BookFunctionsProps {
 
 
 /**GET FUNCIOTIONS */
-export async function getBookData(props: BookFunctionsProps): Promise<void> {
-    const { showNotification, setEntities } = props;
+export async function getBookData({ showNotification, setEntities }: BookFunctionsProps): Promise<void> {
 
     if (!setEntities) throw new Error;
 
@@ -41,8 +40,7 @@ export async function getBookData(props: BookFunctionsProps): Promise<void> {
 
 
 /******SUBMIT FUNCIOTIONS ***********/
-export async function createBook(props: BookFunctionsProps): Promise<void> {
-    const { showNotification, entities } = props
+export async function createBook({ showNotification, entities }: BookFunctionsProps): Promise<void> {
     if (!entities) throw new Error;
 
     const entity = entities[0];
@@ -58,8 +56,7 @@ export async function createBook(props: BookFunctionsProps): Promise<void> {
 }
 
 
-export async function createBookArray(props: BookFunctionsProps) {
-    const { showNotification, entities, setEntityResults } = props
+export async function createBookArray({ showNotification, entities, setEntityResults }: BookFunctionsProps) {
     if (!entities || entities.length < 0) return;
 
     const request = await DataStore.createArray(entities);
@@ -75,8 +72,7 @@ export async function createBookArray(props: BookFunctionsProps) {
 
 
 
-export async function updateBook(props: BookFunctionsProps): Promise<void> {
-    const { showNotification, entities } = props
+export async function updateBook({ showNotification, entities }: BookFunctionsProps): Promise<void> {
     if (!entities) throw new Error;
 
     const entity = entities[0];
@@ -98,8 +94,7 @@ export async function updateBook(props: BookFunctionsProps): Promise<void> {
     showNotification(request.message, 'success')
 }
 
-export async function deleteBook(id: number, props: BookFunctionsProps): Promise<void> {
-    const { showNotification } = props;
+export async function deleteBook(id: number, { showNotification }: BookFunctionsProps): Promise<void> {
     if (!id) return;
 
     const request = await DataStore.delete(id);
@@ -112,10 +107,8 @@ export async function deleteBook(id: number, props: BookFunctionsProps): Promise
 }
 
 
-export async function importInsertBookSheet(file: File, props: BookFunctionsProps) {
+export async function importInsertBookSheet(file: File, { showNotification }: BookFunctionsProps) {
     // console.log(file.)
-    const { showNotification } = props;
-
     if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx", 'failure');
 
     try {

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
-import type { BookEntity } from "../../Data/Types/Entity/book.entity";
+import type { BookEntity } from "./book.entity";
 import type { ImportFlow } from "../../Data/Types/modalFlow";
 import { createBookArray, importInsertBookSheet } from "./book.functions";
 import { BookColumns } from "./book.columns";

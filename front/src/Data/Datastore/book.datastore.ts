@@ -1,5 +1,5 @@
 import { Config } from "../../Config/config";
-import type { BookEntity } from "../Types/Entity/book.entity";
+import type { BookEntity } from "../../Pages/Book/book.entity";
 import { RequestReturn } from "../Types/requestReturn";
 
 

@@ -3,7 +3,7 @@ import style from '../../UI/Styles/table.module.css'
 
 import type { TableColumns } from '../../UI/Components/Table/table.component';
 
-import type { AuthorEntity } from '../../Data/Types/Entity/author.entity';
+import type { AuthorEntity } from './author.entity';
 
 
 export const AuthorColumns: TableColumns<AuthorEntity>[] = [

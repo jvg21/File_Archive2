@@ -6,7 +6,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ModalFrame } from "../../UI/Components/Global/modal.component";
 import type { ModalFlow } from "../../Data/Types/modalFlow";
 import { useNotification } from "../../Data/Context/notification.context";
-import type { BookEntity } from "../../Data/Types/Entity/book.entity";
+import type { BookEntity } from "./book.entity";
 import { BookColumns } from "./book.columns";
 import { createBook, deleteBook, generateEmptyBook, getBookData, updateBook } from "./book.functions";
 import { BookForm } from "./book.form";

@@ -1,4 +1,4 @@
-import type { UrlEntity } from "./url.entity";
+import type { UrlEntity } from "../Url/url.entity";
 
 export interface AuthorEntity  {
     id:number,

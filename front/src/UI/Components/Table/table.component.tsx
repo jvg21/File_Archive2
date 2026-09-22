@@ -2,11 +2,12 @@ import { useEffect, useState, type ReactNode } from 'react'
 import style from '../../Styles/table.module.css'
 import { TablePagination } from './pagination.component'
 import type { IconType } from 'react-icons'
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 
 export type TableColumns<T> = {
     key: keyof T,
     header: string,
-    render?: (value: T[keyof T], row: T) => ReactNode
+    render?: (value: T[keyof T], row: T) => ReactNode,
     className?: string
 }
 
@@ -20,15 +21,18 @@ export type TableActions<T> = {
 export type TableProps<T> = {
     tableData: T[],
     tableColumn: TableColumns<T>[],
-    emptyMessage?: string,
-    keyExtractor?: (row: T) => string | number,
-    initialPageSize: number,
-    onRowClick: (row: T) => void,
+
+
     hideColumns?: (keyof T)[],
-    // resetFuncition: () => void,
-    actions?: TableActions<T>[],
     pagination?: boolean
+    emptyMessage?: string,
+    initialPageSize?: number,
+    isColapsable?: boolean,
     loading?: boolean
+
+    onRowClick?: (row: T) => void,
+    keyExtractor?: (row: T) => string | number,
+    actions?: TableActions<T>[],
 }
 
 export function Table<T extends Object>({
@@ -36,8 +40,9 @@ export function Table<T extends Object>({
     tableColumn,
     actions = [],
     keyExtractor,
-    onRowClick,
+    onRowClick = () => { },
     hideColumns,
+    isColapsable = false,
     emptyMessage = "No Data",
     initialPageSize = 25,
     pagination = true,
@@ -46,6 +51,7 @@ export function Table<T extends Object>({
 }: TableProps<T>) {
 
 
+    const [colpased, setColapsed] = useState(false);
     //***PAGINATION*** */
     const [currentPage, setCurrentPage] = useState<number>(1)
     const [pageSize, setPageSize] = useState(initialPageSize)
@@ -64,12 +70,21 @@ export function Table<T extends Object>({
 
 
     {/**NO DATA*/ }
-    if (tableData.length <= 0) return <div className={style.empty}>{emptyMessage}</div>
     if (loading) return <div className={style.empty}>loading........</div>
+    if (tableData.length <= 0) return <div className={style.empty}>{emptyMessage}</div>
 
     return (
         <div className={style.tableWrapper}>
             {/******TABLE***** */}
+            {isColapsable &&
+                <div className={style.tableHeader}>
+                    <button onClick={() => setColapsed((prev) => !prev)} className={style.tableButton}>{
+                        colpased
+                            ? <FaChevronUp className={style.childrenArrow} />
+                            : <FaChevronDown className={style.childrenArrow} />
+                    }</button>
+                </div>
+            }
             <table className={style.table}>
                 <thead >
                     <tr>
@@ -79,14 +94,14 @@ export function Table<T extends Object>({
 
                         {
                             actions && actions.length > 0 &&
-                            <th key={'actions'}>Actions</th>
+                            <th key={'actions'}>Ações</th>
                         }
                     </tr>
 
 
                 </thead>
                 <tbody>
-                    {
+                    {!colpased &&
                         paginatedData.map((row, index) =>
                             <tr onClick={onRowClick ? () => onRowClick(row) : undefined} key={
                                 keyExtractor ? keyExtractor(row) : index
@@ -139,7 +154,7 @@ export function Table<T extends Object>({
             </table>
 
             { /***PAGINATION**** */}
-            {requirePagination && <TablePagination
+            {requirePagination && !colpased && <TablePagination
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 totalPages={totalPages}
