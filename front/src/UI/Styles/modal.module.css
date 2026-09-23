@@ -68,7 +68,7 @@
 
 
 .header {
-    height: 5%;
+    height: 7%;
     display: flex;
     justify-content: end;
     padding: 2%;
@@ -79,8 +79,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
+        width: 21px;
+        height: 21px;
+        
 
         background-color: transparent;
         border: none;
@@ -95,7 +96,7 @@
     }
 
     button:hover {
-        background-color: var(--failure-red);
+        background-color: var(--accent);
         color: var(--white);
 
     }

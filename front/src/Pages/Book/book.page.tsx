@@ -43,7 +43,12 @@ export const BookPage = () => {
     }, [])
 
     const filtredData = useMemo(() => {
-        return TextFilter(filterString, ["id", "title", "summary"], tableData || []);
+        return TextFilter<Entity, keyof Entity>(filterString, tableData || [],
+            [
+                { Key: "id" },
+                { Key: "title" },
+                { Key: "summary" },
+            ]);
     }, [filterString, tableData])
 
     async function handleSubmit() {

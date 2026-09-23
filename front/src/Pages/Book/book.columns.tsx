@@ -25,7 +25,6 @@ export const BookColumns: TableColumns<BookEntity>[] = [
                         )
                     }
                 </ul>
-
         }
     },
     {
