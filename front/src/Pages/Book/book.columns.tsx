@@ -29,7 +29,7 @@ export const BookColumns: TableColumns<BookEntity>[] = [
         }
     },
     {
-        key: "summary", header: "summary",
+        key: "summary", header: "Summary",
         render: (value) => {
             const summary = value as BookEntity["summary"];
             return summary.slice(0, 20)
@@ -38,7 +38,7 @@ export const BookColumns: TableColumns<BookEntity>[] = [
     {
         key: "currentChapter", header: "Chapters",
         render: (value, row) => {
-            return `${value}/${row.totalChapters ?? '??'}`
+            return `${value??"-"} / ${row.totalChapters ?? '??'}`
         }
     },
     { key: "rating", header: "Rating" },

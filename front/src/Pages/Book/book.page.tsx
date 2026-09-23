@@ -12,6 +12,7 @@ import { createBook, deleteBook, generateEmptyBook, getBookData, updateBook } fr
 import { BookForm } from "./book.form";
 import { Config } from "../../Config/config";
 import { ImportModal } from "./book.import";
+import { TextFilter } from "../../UI/Components/Filters/text.filter";
 
 
 type Entity = BookEntity;
@@ -26,27 +27,29 @@ export const BookPage = () => {
     const [tableData, setTableData] = useState<Entity[] | null>(null);
     const [selectedEntity, SetSelectedEntity] = useState<Entity>(generateEmpty())
 
-
     /**PageStates */
     const [isLoading, setLoading] = useState<boolean>(true);
     const [formModal, setFormModal] = useState<boolean>(false);
     const [modalPage, setModalPage] = useState<ModalFlow>('edit');
     const [importModal, setImportModal] = useState<boolean>(false);
 
+    /****FILTERS** */
+    const [filterString, setFilterString] = useState("");
 
-    // console.log(importSheet)
     useEffect(() => {
         getBookData({ setEntities: setTableData, showNotification });
         setLoading(false);
 
     }, [])
 
-
+    const filtredData = useMemo(() => {
+        return TextFilter(filterString, ["id", "title", "summary"], tableData || []);
+    }, [filterString, tableData])
 
     async function handleSubmit() {
         if (modalPage === 'create') await createBook({ entity: selectedEntity, showNotification })
         if (modalPage === 'edit') await updateBook({ entity: selectedEntity, showNotification })
-        if (modalPage === 'delete') await deleteBook( {entity:selectedEntity, showNotification })
+        if (modalPage === 'delete') await deleteBook({ entity: selectedEntity, showNotification })
 
         getBookData({ setEntities: setTableData, showNotification });
         setFormModal(false);
@@ -58,27 +61,25 @@ export const BookPage = () => {
         { key: 'delete', header: "Delete", action: (row) => { SetSelectedEntity(row); setModalPage('delete'); setFormModal(true) }, icon: FaRegTrashAlt }
     ]
 
-    const TableMemo = useMemo(() =>
-        <Table
-            tableColumn={TableColumns}
-            actions={TableActions}
-            tableData={tableData ?? []}
-            onRowClick={SetSelectedEntity}
-            keyExtractor={(row) => row.id}
-            initialPageSize={Config.defaultTableDataSize}
-            loading={isLoading}
-        />, [tableData])
-
     return (
         <div className={pageStyle.main}>
 
             <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
             <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
+            <input type="text"
+                onChange={(e) => setFilterString(e.target.value)}
+                value={filterString}
+            />
 
-
-
-            {/* /***LOAD THE TABLE COMPONENT* */}
-            {TableMemo}
+            <Table
+                tableColumn={TableColumns}
+                actions={TableActions}
+                tableData={filtredData ?? []}
+                onRowClick={SetSelectedEntity}
+                keyExtractor={(row) => row.id}
+                initialPageSize={Config.defaultTableDataSize}
+                loading={isLoading}
+            />
 
             {
                 formModal &&
