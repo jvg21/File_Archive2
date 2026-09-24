@@ -74,20 +74,42 @@ namespace API.Types.Models
         {
             var isValid = true;
 
-            if(this.Title == "")
+            if (string.IsNullOrWhiteSpace(Title))
             {
-                throw new InvalidFormException("Title Invalid, mustn't be a empty string");
+                throw new InvalidFormException("Title Invalid, mustn't be empty");
             }
 
-            if (this.Rating != null && (this.Rating > 10 || this.Rating < 0))
+            if (string.IsNullOrWhiteSpace(Summary))
+            {
+                throw new InvalidFormException("Summary Invalid, mustn't be empty");
+            }
+
+
+            if (this.Rating.HasValue &&  (this.Rating > 10 || this.Rating < 0))
             {
                 throw new InvalidFormException("Rating Value Invalid, must be between 0 and 10");
             }
 
-            if(this.TotalChapters != null && this.CurrentChapter !=null && this.TotalChapters < this.CurrentChapter)
+
+            if (Words.HasValue && Words.Value < 0)
+            {
+                throw new InvalidFormException("Words Invalid, must be greater than or equal to 0");
+            }
+
+            if (this.TotalChapters.HasValue && this.CurrentChapter.HasValue && this.TotalChapters < this.CurrentChapter)
             {
                 throw new InvalidFormException("Current Chapter value is Higher than Total Chapters");
             }
+            if (!Enum.IsDefined(typeof(ReadingStatus), ReadingStatus))
+            {
+                throw new InvalidFormException("Invalid reading status");
+            }
+
+            if (!Enum.IsDefined(typeof(WritingStatus), WritingStatus))
+            {
+                throw new InvalidFormException("Invalid writing status");
+            }
+
 
 
             return isValid;
