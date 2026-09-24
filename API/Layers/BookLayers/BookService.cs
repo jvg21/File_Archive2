@@ -102,17 +102,25 @@ namespace API.Layers.BookLayers
 
             foreach (var row in sheetArrayData)
             {
+                UrlInsertDTO[] urls = [];
+
+                //    for (var i = 9; i <= 11; i++)
+                //    {
+                //        var name = urlNameGenerator(bookRow[i]);
+                //        if (row[i]) urls.push({ content: bookRow[i], name: name.match(urlDomainRegex)?.[1] })
+                //}
+
                 var book = new BookInsertDTO
                 {
-                    Title = row[0] == "" ? null : row[0],
-                    Summary = row[1] == "" ? null : row[1],
-                    Notes = row[2] == "" ? null : row[2],
-                    Rating = row[3] == "" ? null : Convert.ToDouble(row[3]),
-                    CurrentChapter = row[4] == "" ? null : Convert.ToInt32(row[4]),
-                    TotalChapters = row[5] == "" ? null : Convert.ToInt32(row[5]),
-                    Words = row[6] == "" ? null : Convert.ToInt32(row[6]),
-                    //ReadingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
-                    //WritingStatus = row[6] == "" ? null : Convert.ToInt32(row[6]),
+                    Title = row[0] != "" ? row[0] : "",
+                    Summary = row[1] != "" ? row[1] : null,
+                    Notes = row[2] != "" ? row[2] : null,
+                    Rating = row[3] != "" ? Convert.ToDouble(row[3]) : null,
+                    CurrentChapter = row[4] != "" ? Convert.ToInt32(row[4]) : null,
+                    TotalChapters = row[5] != "" ? Convert.ToInt32(row[5]) : null,
+                    Words = row[6] != "" ? Convert.ToInt32(row[6]) : null,
+                    ReadingStatus = row[7] != "" && Enum.TryParse<ReadingStatus>(row[7], true, out var parsedReadingStatus) ? parsedReadingStatus : null,
+                    WritingStatus = row[8] != "" && Enum.TryParse<WritingStatus>(row[8], true, out var parsedWritingStatus) ? parsedWritingStatus : 0,
                 };
                 bookData.Add(book);
             }

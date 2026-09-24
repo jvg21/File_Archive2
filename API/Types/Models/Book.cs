@@ -74,6 +74,11 @@ namespace API.Types.Models
         {
             var isValid = true;
 
+            if(this.Title == "")
+            {
+                throw new InvalidFormException("Title Invalid, mustn't be a empty string");
+            }
+
             if (this.Rating != null && (this.Rating > 10 || this.Rating < 0))
             {
                 throw new InvalidFormException("Rating Value Invalid, must be between 0 and 10");

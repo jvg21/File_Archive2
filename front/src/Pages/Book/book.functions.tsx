@@ -124,7 +124,7 @@ export async function importInsertBookSheet(file: File, { showNotification }: Bo
 
             const urls: Partial<UrlEntity>[] = []
 
-            for (var i = 11; i <= 13; i++) {
+            for (var i = 9; i <= 11; i++) {
                 var name = urlNameGenerator(bookRow[i]);
                 if (bookRow[i]) urls.push({ content: bookRow[i], name: name.match(urlDomainRegex)?.[1] })
             }
