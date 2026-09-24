@@ -13,6 +13,11 @@ import { BookForm } from "./book.form";
 import { Config } from "../../Config/config";
 import { ImportModal } from "./book.import";
 import { TextFilter } from "../../UI/Components/Filters/text.filter";
+import filterStyles from "../../UI/Styles/filters.module.css";
+import { SelectFilter, SelectFilterComponent } from "../../UI/Components/Filters/select.filter";
+import { getAllWritingStatus, getWritingStatusByName, WritingStatusEnum } from "../../Data/Enums/writingStatus.enum";
+import { getAllReadingStatus, getReadingStatusByName } from "../../Data/Enums/readingStatus.enum";
+import { resetFilters } from "../../UI/Components/Filters/reset.filters";
 
 
 type Entity = BookEntity;
@@ -35,6 +40,8 @@ export const BookPage = () => {
 
     /****FILTERS** */
     const [filterString, setFilterString] = useState("");
+    const [writingStatusFilter, setWritingStatusFilter] = useState("");
+    const [readingStatusFilter, setReadingStatusFilter] = useState("");
     // const [, setFilterString] = useState("");
 
     useEffect(() => {
@@ -44,14 +51,22 @@ export const BookPage = () => {
     }, [])
 
     const filtredData = useMemo(() => {
-        return TextFilter(filterString, tableData || [], [
+        const TextFilterData = TextFilter(filterString, tableData || [], [
             { key: 'id' }, { key: 'title' }, { key: 'summary' },
             { key: 'authors', childKeys: ['name'] },
-            { key: 'urls', childKeys: ['name','content'] },
+            { key: 'urls', childKeys: ['name', 'content'] },
 
         ])
 
-    }, [filterString, tableData])
+        const WritingStatusData = writingStatusFilter !== "" ? SelectFilter(String(getWritingStatusByName(writingStatusFilter)), 'writingStatus', TextFilterData) : TextFilterData
+        const ReadingStatusData = readingStatusFilter !== "" ? SelectFilter(String(getReadingStatusByName(readingStatusFilter)), 'readingStatus', WritingStatusData) : WritingStatusData
+
+        return ReadingStatusData
+
+    }, [filterString, tableData, writingStatusFilter, readingStatusFilter])
+
+
+
 
     async function handleSubmit() {
         if (modalPage === 'create') await createBook({ entity: selectedEntity, showNotification })
@@ -71,19 +86,55 @@ export const BookPage = () => {
     return (
         <div className={pageStyle.main}>
 
-            <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
-            <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
+            <div className={pageStyle.inrowDiv}>
+                <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
+                <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
+
+            </div>
 
             {/***FILTERS* */}
-            <input type="text"
-                onChange={(e) => setFilterString(e.target.value)}
-                value={filterString}
-            />
+            <div className={filterStyles.form}>
+                <div className={filterStyles.field}>
+                    <label> </label>
+                    <input type="text"
+                        value={filterString}
+                        placeholder="search ...."
+                        onChange={(e) => setFilterString(e.target.value)}
+                    />
+                </div>
 
-            {/* <SelectFilterComponent
-                
-            
-            /> */}
+                <div className={filterStyles.field}>
+                    <label>Reading Status:</label>
+                    <SelectFilterComponent
+                        field={'name'}
+                        data={getAllReadingStatus()}
+                        value={readingStatusFilter}
+                        onChangeFunc={setReadingStatusFilter}
+                        defaultString=" all "
+                    />
+                </div>
+                <div className={filterStyles.field}>
+                    <label>WritingStatus:</label>
+                    <SelectFilterComponent
+                        field={'name'}
+                        data={getAllWritingStatus()}
+                        value={writingStatusFilter}
+                        onChangeFunc={setWritingStatusFilter}
+                        defaultString="all"
+                    />
+                </div>
+
+
+
+                <div className={filterStyles.field}>
+                    <label> </label>
+                    <button className={filterStyles.fieldButton} onClick={() => resetFilters([setFilterString, setReadingStatusFilter, setWritingStatusFilter])}>
+                        Clean Filters
+                    </button>
+
+                </div>
+
+            </div>
 
             <Table
                 tableColumn={TableColumns}

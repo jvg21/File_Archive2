@@ -1,6 +1,5 @@
 .main {
     width: 100%;
-    min-height: 100vh;
     display: flex;
     flex-direction: row;
     overflow-x: hidden;
@@ -9,6 +8,7 @@
 .outlet {
     min-height: 100vh;
     margin-left: var(--sidebar-width);
+
     flex: 1;
     overflow-x: auto;
 
@@ -20,6 +20,10 @@
 }
 
 @media (max-width: 768px) {
+    .main {
+        margin-top: var(--colapsed-sidebar-heigth);
+
+    }
 
     .outlet,
     .outletCollapsed {

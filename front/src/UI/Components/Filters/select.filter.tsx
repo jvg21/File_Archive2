@@ -1,5 +1,6 @@
 
 export function SelectFilter<T, Key extends keyof T>(filter: string, key: Key, data: T[]): T[] {
+    console.log(filter,data)
     if (!filter || filter === '' || data.length <= 0) return data;
 
     const type = typeof data[0]?.[key]
@@ -39,7 +40,7 @@ export function SelectFilterComponent<T, Key extends keyof T>({ field, data, val
             value={value}
             onChange={(e) => onChangeFunc(e.target.value)}
         >
-            <option key={-1} value={""} selected>{defaultString}</option>
+            <option key={-1} value={""} >{defaultString}</option>
 
             {
                 SelectOptions(field, data).map((option, index) =>

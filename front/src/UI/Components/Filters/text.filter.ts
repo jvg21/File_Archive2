@@ -1,3 +1,4 @@
+import { normalizeText } from "../../../Utils/normalizeText";
 
 interface KeyType<T> {
     key: keyof T,
@@ -8,7 +9,8 @@ interface KeyType<T> {
 export function TextFilter<T>(filterString: string, data: T[], fields: KeyType<T>[]): T[] {
 
     if (!filterString || filterString === "") return data;
-    const lowerCaseFilter = filterString.toLocaleLowerCase()
+    
+    const normalizedText = normalizeText(filterString)
 
     const filteredData = data.filter((entity) => {
         for (const field of fields) {
@@ -17,8 +19,8 @@ export function TextFilter<T>(filterString: string, data: T[], fields: KeyType<T
             if (attributeValue == null) continue;
             const attributeType = typeof attributeValue;
 
-            if (attributeType === 'string' && String(attributeValue).toLocaleLowerCase().includes(lowerCaseFilter)) return true
-            if (attributeType === 'number' && String(attributeValue).includes(lowerCaseFilter)) return true
+            if (attributeType === 'string' && normalizeText(String(attributeValue)).includes(normalizedText)) return true
+            if (attributeType === 'number' && normalizeText(String(attributeValue)).includes(normalizedText)) return true
 
 
 
@@ -36,7 +38,7 @@ export function TextFilter<T>(filterString: string, data: T[], fields: KeyType<T
 
                         if (childValue == null) return false;
 
-                        return String(childValue).toLocaleLowerCase().includes(lowerCaseFilter);
+                        return normalizeText(String(childValue)).includes(normalizedText);
                     });
                 });
 

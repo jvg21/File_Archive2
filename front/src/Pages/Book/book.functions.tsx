@@ -79,7 +79,7 @@ export async function updateBook({ showNotification, entity }: BookFunctionsProp
     const payload = {
         ...entity,
         urls: entity.urls?.filter((url) => !url.id),
-        author: entity.authors?.filter((author) => !author.id),
+        authors: entity.authors?.filter((author) => !author.id),
     };
 
     const request = await DataStore.update(payload);
