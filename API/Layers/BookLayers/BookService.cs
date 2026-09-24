@@ -102,13 +102,15 @@ namespace API.Layers.BookLayers
 
             foreach (var row in sheetArrayData)
             {
-                UrlInsertDTO[] urls = [];
+                List<UrlInsertDTO> urls = [];
 
-                //    for (var i = 9; i <= 11; i++)
-                //    {
-                //        var name = urlNameGenerator(bookRow[i]);
-                //        if (row[i]) urls.push({ content: bookRow[i], name: name.match(urlDomainRegex)?.[1] })
-                //}
+                for (var i = 9; i <= 11; i++)
+                {
+                    if (row[i] != null)
+                    {
+                        urls.Add(new UrlInsertDTO { Content = row[i], Name = row[i] });
+                    }
+                }
 
                 var book = new BookInsertDTO
                 {
@@ -121,6 +123,7 @@ namespace API.Layers.BookLayers
                     Words = row[6] != "" ? Convert.ToInt32(row[6]) : null,
                     ReadingStatus = row[7] != "" && Enum.TryParse<ReadingStatus>(row[7], true, out var parsedReadingStatus) ? parsedReadingStatus : null,
                     WritingStatus = row[8] != "" && Enum.TryParse<WritingStatus>(row[8], true, out var parsedWritingStatus) ? parsedWritingStatus : 0,
+                    Urls = urls ?? []
                 };
                 bookData.Add(book);
             }
