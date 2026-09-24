@@ -1,4 +1,5 @@
 import type { AuthorEntity } from "../Author/author.entity";
+import type { BookEntity } from "../Book/book.entity";
 
 
 export interface UrlEntity {
@@ -6,5 +7,6 @@ export interface UrlEntity {
     name?: string,
     content: string,
     author?: AuthorEntity
+    book?: BookEntity
 
 }
