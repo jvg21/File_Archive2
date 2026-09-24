@@ -18,22 +18,27 @@ export type TableActions<T> = {
     action: (row: T) => void
 }
 
-export type TableProps<T> = {
-    tableData: T[],
-    tableColumn: TableColumns<T>[],
-
-
-    hideColumns?: (keyof T)[],
+interface TableOptions<T> {
     pagination?: boolean
     emptyMessage?: string,
     initialPageSize?: number,
     isColapsable?: boolean,
+    hideColumns?: (keyof T)[],
+    hideHeader?: boolean
+}
+
+export type TableProps<T> = {
+    tableData: T[],
+    tableColumn: TableColumns<T>[],
     loading?: boolean
 
     onRowClick?: (row: T) => void,
     keyExtractor?: (row: T) => string | number,
     actions?: TableActions<T>[],
+    options?: TableOptions<T>
+
 }
+
 
 export function Table<T extends Object>({
     tableData,
@@ -41,15 +46,20 @@ export function Table<T extends Object>({
     actions = [],
     keyExtractor,
     onRowClick = () => { },
-    hideColumns,
-    isColapsable = false,
-    emptyMessage = "No Data",
-    initialPageSize = 25,
-    pagination = true,
-    loading = false
+    loading = false,
+    options = {}
+
 
 }: TableProps<T>) {
 
+    const {
+        hideColumns = [],
+        isColapsable = false,
+        emptyMessage = "No Data",
+        initialPageSize = 25,
+        pagination = true,
+        hideHeader = false
+    } = options
 
     const [colpased, setColapsed] = useState(false);
     //***PAGINATION*** */
@@ -86,7 +96,7 @@ export function Table<T extends Object>({
                 </div>
             }
             <table className={style.table}>
-                <thead >
+                <thead style={{ display: hideHeader ? 'none' : '' }}>
                     <tr>
                         {tableColumn.filter((col) => !hideColumns?.includes(col.key)).map((col, index) =>
                             <th key={index} className={col.className ? style[col.className] : ''}>{col.header}</th>

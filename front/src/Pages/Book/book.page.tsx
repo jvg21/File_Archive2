@@ -35,6 +35,7 @@ export const BookPage = () => {
 
     /****FILTERS** */
     const [filterString, setFilterString] = useState("");
+    // const [, setFilterString] = useState("");
 
     useEffect(() => {
         getBookData({ setEntities: setTableData, showNotification });
@@ -43,12 +44,8 @@ export const BookPage = () => {
     }, [])
 
     const filtredData = useMemo(() => {
-        return TextFilter<Entity>(filterString, tableData || [],
-            [
-                { Key: "id" },
-                { Key: "title" },
-                { Key: "summary" },
-            ]);
+        return TextFilter(filterString, ['id', 'title', 'summary'], tableData || [])
+         
     }, [filterString, tableData])
 
     async function handleSubmit() {
@@ -71,10 +68,17 @@ export const BookPage = () => {
 
             <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
             <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
+
+            {/***FILTERS* */}
             <input type="text"
                 onChange={(e) => setFilterString(e.target.value)}
                 value={filterString}
             />
+
+            {/* <SelectFilterComponent
+                
+            
+            /> */}
 
             <Table
                 tableColumn={TableColumns}
@@ -82,8 +86,11 @@ export const BookPage = () => {
                 tableData={filtredData ?? []}
                 onRowClick={SetSelectedEntity}
                 keyExtractor={(row) => row.id}
-                initialPageSize={Config.defaultTableDataSize}
                 loading={isLoading}
+                options={{
+                    initialPageSize: Config.defaultTableDataSize
+
+                }}
             />
 
             {

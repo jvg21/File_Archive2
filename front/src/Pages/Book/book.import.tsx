@@ -45,9 +45,11 @@ export const ImportModal = (props: ImportFormProps) => {
             <Table
                 tableColumn={BookColumns}
                 tableData={importData ?? []}
-                hideColumns={['id']}
-                initialPageSize={importData?.length || 0}
                 onRowClick={() => { }}
+                options={{
+                    hideColumns: ['id'],
+                    initialPageSize: importData?.length || Config.defaultTableDataSize
+                }}
             />
             <button type="button" className={pageStyle.button} onClick={handleImportDataSubmit}>Import Books</button>
         </>
@@ -72,7 +74,7 @@ export const ImportModal = (props: ImportFormProps) => {
                 </>
             }
             {modalPage !== 'import' &&
-                <div style={{width:'100%'}}>
+                <div style={{ width: '100%' }}>
                     <button onClick={() => setModalPage('success')}> Success</button>
                     <button onClick={() => setModalPage('failed')}> Failed</button>
                 </div>
@@ -84,9 +86,12 @@ export const ImportModal = (props: ImportFormProps) => {
                 <Table
                     tableColumn={BookColumns}
                     tableData={resultData?.success as BookEntity[] ?? []}
-                    hideColumns={['currentChapter', 'totalChapters', 'summary', 'readingStatus', 'writingStatus']}
-                    initialPageSize={importData?.length || Config.defaultTableDataSize}
                     onRowClick={() => { }}
+
+                    options={{
+                        hideColumns: ['currentChapter', 'totalChapters', 'summary', 'readingStatus', 'writingStatus'],
+                        initialPageSize: importData?.length || Config.defaultTableDataSize
+                    }}
                 />
 
             }
@@ -95,8 +100,10 @@ export const ImportModal = (props: ImportFormProps) => {
                 <Table
                     tableColumn={BookColumns}
                     tableData={resultData?.failed.map((data) => data.entry) as BookEntity[] ?? []}
-                    initialPageSize={importData?.length || 0}
                     onRowClick={() => { }}
+                    options={{
+                        initialPageSize: importData?.length || Config.defaultTableDataSize
+                    }}
                 />
 
             }
