@@ -65,7 +65,7 @@ namespace API.Layers.BookLayers
             return Ok(response);
         }
 
-        [HttpPatch("status/{id:int}/{status:bool}")]
+        [HttpPatch("{id:int}/{status:bool}")]
         public async Task<IActionResult> ChangeActiveStatus(int id, bool status)
         {
             var response = await _bookService.ChangeActiveStatus(id, status);

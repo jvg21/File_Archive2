@@ -40,7 +40,7 @@ export class BookDataStore {
 
     }
 
-     async getAllMini(): Promise<RequestReturn> {
+    async getAllMini(): Promise<RequestReturn> {
         const response = new RequestReturn();
 
         try {
@@ -100,7 +100,7 @@ export class BookDataStore {
         return response;
     }
 
-    async create(entity:Entity): Promise<RequestReturn> {
+    async create(entity: Entity): Promise<RequestReturn> {
         const response = new RequestReturn();
 
         try {
@@ -109,7 +109,7 @@ export class BookDataStore {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( entity )
+                body: JSON.stringify(entity)
                 // credentials: 'include'
             })
 
@@ -131,7 +131,7 @@ export class BookDataStore {
         return response;
     }
 
-      async createArray(entities:Entity[]): Promise<RequestReturn> {
+    async createArray(entities: Entity[]): Promise<RequestReturn> {
         const response = new RequestReturn();
 
         try {
@@ -140,7 +140,37 @@ export class BookDataStore {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( entities )
+                body: JSON.stringify(entities)
+                // credentials: 'include'
+            })
+
+            response.status = request.status;
+            if (response.status !== 200) {
+
+                const data = await request.json()
+                response.message = data.message || "";
+                return response;
+            };
+
+            response.data = [await request.json()];
+            response.message = "Created"
+
+        } catch (e) {
+            console.log(e)
+            response.message = "Error Creating";
+        }
+        return response;
+    }
+
+    async importSheet(file: File): Promise<RequestReturn> {
+        const response = new RequestReturn();
+        
+        const formData = new FormData();
+        formData.append('file',file)
+        try {
+            const request = await fetch(`${this.URL}/array`, {
+                method: 'POST',
+                body: formData
                 // credentials: 'include'
             })
 
@@ -163,7 +193,7 @@ export class BookDataStore {
     }
 
 
-    async update(entity:Entity): Promise<RequestReturn> {
+    async update(entity: Entity): Promise<RequestReturn> {
         const response = new RequestReturn();
 
         try {
@@ -172,7 +202,7 @@ export class BookDataStore {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify( entity )
+                body: JSON.stringify(entity)
                 // credentials: 'include'
             })
 

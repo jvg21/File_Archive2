@@ -50,7 +50,7 @@ namespace API.Layers.AuthorLayers
             return Ok(response);
         }
 
-        [HttpPatch("status/{id:int}/{status:bool}")]
+        [HttpPatch("{id:int}/{status:bool}")]
         public async Task<IActionResult> ChangeActiveStatus(int id,bool status)
         {
             var response = await _authorService.ChangeActiveStatus(id,status);

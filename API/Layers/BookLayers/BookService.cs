@@ -1,5 +1,4 @@
 ﻿
-using API.Layers.UrlLayers;
 using API.Types.DTOs.BookAuthorDTOs;
 using API.Types.DTOs.BookDTOs;
 using API.Types.DTOs.UrlDTOs;
@@ -9,12 +8,9 @@ using API.Types.Interfaces.IAuthor;
 using API.Types.Interfaces.IBook;
 using API.Types.Interfaces.IUrl;
 using API.Types.Models;
-using API.Utils;
 using API.Utils.FileManipulation;
-using ClosedXML.Excel;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Nodes;
 
 namespace API.Layers.BookLayers
 {
@@ -117,10 +113,10 @@ namespace API.Layers.BookLayers
                     Title = row[0] != "" ? row[0] : "",
                     Summary = row[1] != "" ? row[1] : null,
                     Notes = row[2] != "" ? row[2] : null,
-                    Rating = row[3] != "" ? Convert.ToDouble(row[3]) : null,
-                    CurrentChapter = row[4] != "" ? Convert.ToInt32(row[4]) : null,
-                    TotalChapters = row[5] != "" ? Convert.ToInt32(row[5]) : null,
-                    Words = row[6] != "" ? Convert.ToInt32(row[6]) : null,
+                    Rating = row[3] != "" && Double.TryParse(row[3],out var parsedRating) ? parsedRating : null,
+                    CurrentChapter = row[4] != "" && Int32.TryParse(row[4],out var parsedCurrentChapter)? parsedCurrentChapter : null,
+                    TotalChapters = row[5] != "" && Int32.TryParse(row[5], out var parsedTotalChapters) ? parsedTotalChapters : null,
+                    Words = row[6] != "" && Int32.TryParse(row[6], out var parsedWords) ? parsedWords : null,
                     ReadingStatus = row[7] != "" && Enum.TryParse<ReadingStatus>(row[7], true, out var parsedReadingStatus) ? parsedReadingStatus : null,
                     WritingStatus = row[8] != "" && Enum.TryParse<WritingStatus>(row[8], true, out var parsedWritingStatus) ? parsedWritingStatus : 0,
                     Urls = urls ?? []
