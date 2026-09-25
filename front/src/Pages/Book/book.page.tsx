@@ -8,7 +8,7 @@ import type { ModalFlow } from "../../Data/Types/modalFlow";
 import { useNotification } from "../../Data/Context/notification.context";
 import type { BookEntity } from "./book.entity";
 import { BookColumns } from "./book.columns";
-import { createBook, deleteBook, generateEmptyBook, getBookData, updateBook } from "./book.functions";
+import { createBook, deleteBook, exportBookSheet, generateEmptyBook, getBookData, updateBook } from "./book.functions";
 import { BookForm } from "./book.form";
 import { Config } from "../../Config/config";
 import { ImportModal } from "./book.import";
@@ -89,6 +89,7 @@ export const BookPage = () => {
             <div className={pageStyle.inrowDiv}>
                 <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
                 <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
+                <button type="button" className={pageStyle.button} onClick={() => { exportBookSheet({showNotification}) }}>Get Template</button>
 
             </div>
 

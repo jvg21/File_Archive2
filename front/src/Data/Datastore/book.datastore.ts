@@ -100,6 +100,32 @@ export class BookDataStore {
         return response;
     }
 
+     async exportTemplateSheet(): Promise<RequestReturn> {
+        const response = new RequestReturn();
+
+        try {
+            const request = await fetch(`${Config.apiHost}/Template/BookArrayInsertTemplate`, {
+                method: 'GET',
+            })
+
+            response.status = request.status;
+            if (response.status !== 200) {
+
+                const data = await request.json()
+                response.message = data.message || "";
+                return response;
+            };
+
+            response.data = [await request.blob()];
+            response.message = "Template Adquired"
+
+        } catch (e) {
+            console.log(e)
+            response.message = "Error";
+        }
+        return response;
+    }
+
     async create(entity: Entity): Promise<RequestReturn> {
         const response = new RequestReturn();
 

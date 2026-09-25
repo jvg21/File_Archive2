@@ -92,7 +92,7 @@ export async function updateBook({ showNotification, entity }: BookFunctionsProp
 }
 
 export async function deleteBook({ entity, showNotification }: BookFunctionsProps): Promise<void> {
-    if (!entity||!entity.id) return;
+    if (!entity || !entity.id) return;
 
     const request = await DataStore.delete(entity.id);
 
@@ -106,7 +106,39 @@ export async function deleteBook({ entity, showNotification }: BookFunctionsProp
 
 
 export async function importBookSheet(file: File, { showNotification }: BookFunctionsProps) {
+    if (!file.name.includes('.xlsx')) showNotification("Invalid File Format, must be .xlsx", 'failure');
+
+    const request = await DataStore.importSheet(file);
+
+    if (request.status !== 200) {
+        showNotification('Error Importing', 'failure')
+    }
+    showNotification(request.message, 'success')
+}
+
+export async function exportBookSheet({ showNotification }: BookFunctionsProps) {
+
+    const request = await DataStore.exportTemplateSheet();
     
+    if (request.status !== 200) {
+        showNotification('Error Exporting', 'failure')
+    }
+    
+    const url = window.URL.createObjectURL(request.data[0] as Blob)
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "BookArrayInsertTemplate.xlsx";
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.URL.revokeObjectURL(url); ""
+    link.remove();
+
+   
+    showNotification(request.message, 'success')
 }
 
 

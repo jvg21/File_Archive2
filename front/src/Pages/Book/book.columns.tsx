@@ -45,13 +45,13 @@ export const BookColumns: TableColumns<BookEntity>[] = [
     {
         key: "readingStatus", header: "Reading Status",
         render: (value) => {
-            return `${getReadingStatusEnum(value as ReadingStatusId).name}`
+            return value ? getReadingStatusEnum(value as ReadingStatusId).name : ""
         }
     },
     {
         key: "writingStatus", header: "Writing Status",
         render: (value) => {
-            return `${getWritingStatusEnum(value as WritingStatusId).name}`
+            return value ? getWritingStatusEnum(value as WritingStatusId).name : ""
         }
     },
 

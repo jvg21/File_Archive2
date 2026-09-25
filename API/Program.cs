@@ -2,6 +2,7 @@ using API.Data.Database;
 using API.Layers.AuthorLayers;
 using API.Layers.BookAuthorLayers;
 using API.Layers.BookLayers;
+using API.Layers.TemplateLayers;
 using API.Layers.UrlLayers;
 using API.Middleware;
 using API.Types.Interfaces.IAuthor;
@@ -56,6 +57,8 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBookAuthorRepository, BookAuthorRepository>();
 builder.Services.AddScoped<IBookAuthorService, BookAuthorService>();
+
+builder.Services.AddScoped<TemplateService>();
 
 #endregion
 
