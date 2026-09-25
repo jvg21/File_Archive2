@@ -1,8 +1,6 @@
 import { useState } from "react";
 import type { UrlEntity } from "./url.entity";
 import type { ModalFlow } from "../../Data/Types/modalFlow";
-import { urlNameGenerator } from "../../Utils/urlNameGenerator";
-import { useNotification } from "../../Data/Context/notification.context";
 import style from '../../UI/Styles/modal.module.css'
 
 
@@ -16,21 +14,23 @@ interface UrlFormProps<T extends { urls?: Partial<UrlEntity>[], removeUrls?: num
 export const UrlForms = <T extends { urls?: Partial<UrlEntity>[], removeUrls?: number[] },>
     ({ entity, setEntity, flow }: UrlFormProps<T>) => {
 
-    const { showNotification } = useNotification();
+    // const { showNotification } = useNotification();
 
     const [ulrField, setUrlField] = useState<Partial<UrlEntity>>();
 
     function handleAddUrl() {
         if (!ulrField || !ulrField.content) return;
 
-        const urlName = ulrField?.name && ulrField.name !== ""
-            ? ulrField.name.trim()
-            : urlNameGenerator(ulrField.content);
+        const urlName = ulrField.name;
+        
+        // ulrField?.name && ulrField.name !== ""
+        //     ? ulrField.name.trim()
+        //     : urlNameGenerator(ulrField.content);
 
-        if (urlName === "") {
-            showNotification("Please provide a name for the url.", "failure");
-            return;
-        }
+        // if (urlName === "") {
+        //     showNotification("Please provide a name for the url.", "failure");
+        //     return;
+        // }
 
         const newUrl: Partial<UrlEntity> = { ...ulrField, name: urlName };
 

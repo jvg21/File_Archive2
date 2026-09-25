@@ -9,6 +9,7 @@ using API.Types.Interfaces.IBook;
 using API.Types.Interfaces.IUrl;
 using API.Types.Models;
 using API.Utils.FileManipulation;
+using API.Utils.UrlManipulation;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,17 @@ namespace API.Layers.BookLayers
                 newBook.Authors = authors;
             }
 
+            if(newBook.Urls != null)
+            {
+                foreach(var url in newBook.Urls)
+                {
+                    if(url.Name == null || url.Name == "")
+                    {
+                      url.Name = UrlManipulation.GenerateUrlName(url.Content);
+                    }
+                }
+            }
+
             var request = await _bookRepository.Insert(newBook);
 
             return request.Adapt<BookGetDTO>();
@@ -104,7 +116,7 @@ namespace API.Layers.BookLayers
                 {
                     if (row[i] != null)
                     {
-                        urls.Add(new UrlInsertDTO { Content = row[i], Name = row[i] });
+                        urls.Add(new UrlInsertDTO { Content = row[i], Name =  UrlManipulation.GenerateUrlName(row[i]) });
                     }
                 }
 
@@ -173,6 +185,12 @@ namespace API.Layers.BookLayers
                 {
                     var newUrl = url.Adapt<Url>();
                     newUrl.Book_Id = book.Id;
+
+                    if (newUrl.Name == null || newUrl.Name == "")
+                    {
+                        newUrl.Name = UrlManipulation.GenerateUrlName(newUrl.Content);
+                    }
+
                     book.Urls.Add(newUrl);
                 }
             }

@@ -64,7 +64,7 @@ export const BookColumns: TableColumns<BookEntity>[] = [
                 <ul className={style.urls} >
                     {
                         urls.map((url, index) =>
-                            <li key={url.id ?? index}><a target="_blank" href={url.content}>{url.name}</a></li>
+                            <li key={url.id ?? index}><a target="_blank" href={url.content}>{url.name??url.content?.slice(0,20)}</a></li>
                         )
                     }
                 </ul>
