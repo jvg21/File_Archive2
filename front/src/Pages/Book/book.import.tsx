@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import type { ShowNotificationType } from "../../Data/Context/notification.context";
 import type { BookEntity } from "./book.entity";
 import type { ImportFlow } from "../../Data/Types/modalFlow";
-import { createBookArray, importInsertBookSheet } from "./book.functions";
+import { createBookArray, exportBookSheet, importInsertBookSheet } from "./book.functions";
 import { BookColumns } from "./book.columns";
 import { Table } from "../../UI/Components/Table/table.component";
 import pageStyle from '../../UI/Styles/pages.module.css'
@@ -60,6 +60,7 @@ export const ImportModal = (props: ImportFormProps) => {
         <div>
             {modalPage === 'import' &&
                 <>
+                    <button type="button" className={pageStyle.button} onClick={() => { exportBookSheet({ showNotification }) }}>Get Template</button>
                     <input type="file" multiple={false} id="input" onChange={(e) => {
                         e.target.files ?
                             (
@@ -67,6 +68,8 @@ export const ImportModal = (props: ImportFormProps) => {
                             )
                             : undefined
                     }} />
+
+
 
                     {
                         importData && importData?.length > 0 && ImportTableMemo

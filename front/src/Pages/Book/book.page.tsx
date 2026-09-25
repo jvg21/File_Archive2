@@ -89,7 +89,6 @@ export const BookPage = () => {
             <div className={pageStyle.inrowDiv}>
                 <button type="button" className={pageStyle.button} onClick={() => { setModalPage('create'); SetSelectedEntity(generateEmpty()); setFormModal(true) }}>Add + </button>
                 <button type="button" className={pageStyle.button} onClick={() => { setImportModal(true) }}>Import</button>
-                <button type="button" className={pageStyle.button} onClick={() => { exportBookSheet({showNotification}) }}>Get Template</button>
 
             </div>
 
